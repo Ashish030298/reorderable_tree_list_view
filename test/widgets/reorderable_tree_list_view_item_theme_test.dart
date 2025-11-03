@@ -78,7 +78,6 @@ void main() {
       );
     });
 
-
     testWidgets('should use Material Design colors when provided', (
       WidgetTester tester,
     ) async {

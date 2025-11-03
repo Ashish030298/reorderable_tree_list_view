@@ -78,11 +78,20 @@ void main() {
     test('should not have any connector-related properties', () {
       // This test ensures that all connector-related properties have been eliminated
       const TreeTheme theme = TreeTheme();
-      
+
       // This test will fail when we try to access removed properties
-      expect(() => (theme as dynamic).connectorColor, throwsA(isA<NoSuchMethodError>()));
-      expect(() => (theme as dynamic).connectorWidth, throwsA(isA<NoSuchMethodError>()));
-      expect(() => (theme as dynamic).showConnectors, throwsA(isA<NoSuchMethodError>()));
+      expect(
+        () => (theme as dynamic).connectorColor,
+        throwsA(isA<NoSuchMethodError>()),
+      );
+      expect(
+        () => (theme as dynamic).connectorWidth,
+        throwsA(isA<NoSuchMethodError>()),
+      );
+      expect(
+        () => (theme as dynamic).showConnectors,
+        throwsA(isA<NoSuchMethodError>()),
+      );
     });
 
     testWidgets('should be accessible via InheritedWidget', (

@@ -23,7 +23,8 @@ void main() {
             body: ReorderableTreeListView(
               paths: paths,
               initiallyExpanded: <Uri>{Uri.parse('file:///')},
-              itemBuilder: (BuildContext context, Uri path) => Text(path.toString()),
+              itemBuilder: (BuildContext context, Uri path) =>
+                  Text(path.toString()),
               onExpandStart: expandStartPaths.add,
               onExpandEnd: expandEndPaths.add,
               onCollapseStart: collapseStartPaths.add,
@@ -38,7 +39,7 @@ void main() {
       final widget = tester.widget<ReorderableTreeListView>(
         find.byType(ReorderableTreeListView),
       );
-      
+
       // Manually trigger expansion callbacks
       if (widget.onExpandStart != null) {
         widget.onExpandStart!(Uri.parse('file:///folder1'));
@@ -84,13 +85,14 @@ void main() {
               paths: paths,
               initiallyExpanded: <Uri>{Uri.parse('file:///')},
               itemBuilder: (BuildContext context, Uri path) => SizedBox(
-                    key: ValueKey<String>(path.toString()),
-                    height: 60,
-                    child: Text(path.toString()),
-                  ),
+                key: ValueKey<String>(path.toString()),
+                height: 60,
+                child: Text(path.toString()),
+              ),
               onDragStart: dragStartPaths.add,
               onDragEnd: dragEndPaths.add,
-              onReorder: (Uri oldPath, Uri newPath) => reorders.add((oldPath, newPath)),
+              onReorder: (Uri oldPath, Uri newPath) =>
+                  reorders.add((oldPath, newPath)),
             ),
           ),
         ),
@@ -101,7 +103,7 @@ void main() {
       final widget = tester.widget<ReorderableTreeListView>(
         find.byType(ReorderableTreeListView),
       );
-      
+
       // Manually trigger drag callbacks
       if (widget.onDragStart != null) {
         widget.onDragStart!(Uri.parse('file:///file1.txt'));
@@ -139,7 +141,8 @@ void main() {
             body: ReorderableTreeListView(
               paths: paths,
               initiallyExpanded: <Uri>{Uri.parse('file:///')},
-              itemBuilder: (BuildContext context, Uri path) => Text(path.toString()),
+              itemBuilder: (BuildContext context, Uri path) =>
+                  Text(path.toString()),
               selectionMode: SelectionMode.single,
               onSelectionChanged: selectionChanges.add,
               onItemTap: itemTaps.add,
@@ -167,7 +170,9 @@ void main() {
       // expect(itemActivations, contains(Uri.parse('file:///file2.txt')));
     });
 
-    testWidgets('validation callbacks prevent actions', (WidgetTester tester) async {
+    testWidgets('validation callbacks prevent actions', (
+      WidgetTester tester,
+    ) async {
       final List<Uri> expandedPaths = <Uri>[];
       bool allowExpansion = true;
 
@@ -182,7 +187,8 @@ void main() {
             body: ReorderableTreeListView(
               paths: paths,
               initiallyExpanded: <Uri>{Uri.parse('file:///')},
-              itemBuilder: (BuildContext context, Uri path) => Text(path.toString()),
+              itemBuilder: (BuildContext context, Uri path) =>
+                  Text(path.toString()),
               canExpand: (Uri path) => allowExpansion,
               onExpandEnd: expandedPaths.add,
             ),
@@ -195,7 +201,7 @@ void main() {
       final widget = tester.widget<ReorderableTreeListView>(
         find.byType(ReorderableTreeListView),
       );
-      
+
       // Try to expand with validation allowed
       if (widget.onExpandEnd != null) {
         widget.onExpandEnd!(Uri.parse('file:///folder1'));
@@ -223,9 +229,7 @@ void main() {
     testWidgets('context menu callback works', (WidgetTester tester) async {
       final List<(Uri, Offset)> contextMenuEvents = <(Uri, Offset)>[];
 
-      final List<Uri> paths = <Uri>[
-        Uri.parse('file:///file1.txt'),
-      ];
+      final List<Uri> paths = <Uri>[Uri.parse('file:///file1.txt')];
 
       await tester.pumpWidget(
         MaterialApp(
@@ -233,8 +237,9 @@ void main() {
             body: ReorderableTreeListView(
               paths: paths,
               initiallyExpanded: <Uri>{Uri.parse('file:///')},
-              itemBuilder: (BuildContext context, Uri path) => Text(path.toString()),
-              onContextMenu: (Uri path, Offset position) => 
+              itemBuilder: (BuildContext context, Uri path) =>
+                  Text(path.toString()),
+              onContextMenu: (Uri path, Offset position) =>
                   contextMenuEvents.add((path, position)),
             ),
           ),
@@ -249,15 +254,16 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(contextMenuEvents, isNotEmpty);
-      expect(contextMenuEvents.first.$1, equals(Uri.parse('file:///file1.txt')));
+      expect(
+        contextMenuEvents.first.$1,
+        equals(Uri.parse('file:///file1.txt')),
+      );
     });
 
     testWidgets('async validation callbacks work', (WidgetTester tester) async {
       final List<Uri> expandedPaths = <Uri>[];
 
-      final List<Uri> paths = <Uri>[
-        Uri.parse('file:///folder1/file1.txt'),
-      ];
+      final List<Uri> paths = <Uri>[Uri.parse('file:///folder1/file1.txt')];
 
       await tester.pumpWidget(
         MaterialApp(
@@ -265,7 +271,8 @@ void main() {
             body: ReorderableTreeListView(
               paths: paths,
               initiallyExpanded: <Uri>{Uri.parse('file:///')},
-              itemBuilder: (BuildContext context, Uri path) => Text(path.toString()),
+              itemBuilder: (BuildContext context, Uri path) =>
+                  Text(path.toString()),
               canExpandAsync: (Uri path) async {
                 await Future<void>.delayed(const Duration(milliseconds: 100));
                 return path.path.contains('folder1');
@@ -281,12 +288,12 @@ void main() {
       final widget = tester.widget<ReorderableTreeListView>(
         find.byType(ReorderableTreeListView),
       );
-      
+
       // Try to expand (this should succeed based on canExpandAsync logic)
       if (widget.onExpandEnd != null) {
         widget.onExpandEnd!(Uri.parse('file:///folder1'));
       }
-      
+
       // Wait for async validation
       await tester.pump(const Duration(milliseconds: 150));
       await tester.pumpAndSettle();

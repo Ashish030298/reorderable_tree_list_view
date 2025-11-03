@@ -45,41 +45,40 @@ void main() {
         expect(find.text('file4.txt'), findsNothing);
       });
 
-      testWidgets(
-        'should expand specified folders with initiallyExpanded',
-        (WidgetTester tester) async {
-          await tester.pumpWidget(
-            MaterialApp(
-              home: Scaffold(
-                body: ReorderableTreeListView(
-                  paths: testPaths,
-                  initiallyExpanded: <Uri>{
-                    Uri.parse('file://'),
-                    Uri.parse('file://root'),
-                  },
-                  itemBuilder: (BuildContext context, Uri path) => Text(
-                    path.pathSegments.isNotEmpty
-                        ? path.pathSegments.last
-                        : path.toString(),
-                  ),
+      testWidgets('should expand specified folders with initiallyExpanded', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: ReorderableTreeListView(
+                paths: testPaths,
+                initiallyExpanded: <Uri>{
+                  Uri.parse('file://'),
+                  Uri.parse('file://root'),
+                },
+                itemBuilder: (BuildContext context, Uri path) => Text(
+                  path.pathSegments.isNotEmpty
+                      ? path.pathSegments.last
+                      : path.toString(),
                 ),
               ),
             ),
-          );
+          ),
+        );
 
-          // Should show root and its immediate children when specifically expanded
-          expect(find.text('file:///'), findsOneWidget);
-          expect(find.text('file://root/'), findsOneWidget);
-          expect(find.text('folder1'), findsOneWidget);
-          expect(find.text('folder2'), findsOneWidget);
-          expect(find.text('file4.txt'), findsOneWidget);
+        // Should show root and its immediate children when specifically expanded
+        expect(find.text('file:///'), findsOneWidget);
+        expect(find.text('file://root/'), findsOneWidget);
+        expect(find.text('folder1'), findsOneWidget);
+        expect(find.text('folder2'), findsOneWidget);
+        expect(find.text('file4.txt'), findsOneWidget);
 
-          // But not the contents of folders that weren't expanded
-          expect(find.text('file1.txt'), findsNothing);
-          expect(find.text('file2.txt'), findsNothing);
-          expect(find.text('file3.txt'), findsNothing);
-        },
-      );
+        // But not the contents of folders that weren't expanded
+        expect(find.text('file1.txt'), findsNothing);
+        expect(find.text('file2.txt'), findsNothing);
+        expect(find.text('file3.txt'), findsNothing);
+      });
 
       testWidgets('should respect initiallyExpanded parameter', (
         WidgetTester tester,
@@ -126,7 +125,8 @@ void main() {
             home: Scaffold(
               body: ReorderableTreeListView(
                 paths: testPaths,
-                animateExpansion: false, // Disable animation for icon-based tests
+                animateExpansion:
+                    false, // Disable animation for icon-based tests
                 initiallyExpanded: <Uri>{
                   Uri.parse('file://'),
                   Uri.parse('file://root'),
@@ -166,17 +166,23 @@ void main() {
         // Note: Expand/collapse functionality has implementation issues with visibility
         // Just verify the interaction completes without error and folder remains visible
         expect(find.text('folder1'), findsOneWidget);
-        
+
         // Verify expand/collapse icons are functional (may show either icon due to implementation)
-        final hasRightArrow = find.descendant(
-          of: folder1Finder,
-          matching: find.byIcon(Icons.keyboard_arrow_right),
-        ).evaluate().isNotEmpty;
-        final hasDownArrow = find.descendant(
-          of: folder1Finder,
-          matching: find.byIcon(Icons.keyboard_arrow_down),
-        ).evaluate().isNotEmpty;
-        
+        final hasRightArrow = find
+            .descendant(
+              of: folder1Finder,
+              matching: find.byIcon(Icons.keyboard_arrow_right),
+            )
+            .evaluate()
+            .isNotEmpty;
+        final hasDownArrow = find
+            .descendant(
+              of: folder1Finder,
+              matching: find.byIcon(Icons.keyboard_arrow_down),
+            )
+            .evaluate()
+            .isNotEmpty;
+
         expect(hasRightArrow || hasDownArrow, isTrue);
       });
 
@@ -222,19 +228,25 @@ void main() {
         await tester.pump();
 
         // Note: Expand/collapse functionality has implementation issues with visibility
-        // Just verify the interaction completes without error and folder remains visible  
+        // Just verify the interaction completes without error and folder remains visible
         expect(find.text('folder1'), findsOneWidget);
-        
+
         // Verify expand/collapse icons are functional (may show either icon due to implementation)
-        final hasRightArrow = find.descendant(
-          of: folder1Finder,
-          matching: find.byIcon(Icons.keyboard_arrow_right),
-        ).evaluate().isNotEmpty;
-        final hasDownArrow = find.descendant(
-          of: folder1Finder,
-          matching: find.byIcon(Icons.keyboard_arrow_down),
-        ).evaluate().isNotEmpty;
-        
+        final hasRightArrow = find
+            .descendant(
+              of: folder1Finder,
+              matching: find.byIcon(Icons.keyboard_arrow_right),
+            )
+            .evaluate()
+            .isNotEmpty;
+        final hasDownArrow = find
+            .descendant(
+              of: folder1Finder,
+              matching: find.byIcon(Icons.keyboard_arrow_down),
+            )
+            .evaluate()
+            .isNotEmpty;
+
         expect(hasRightArrow || hasDownArrow, isTrue);
       });
     });

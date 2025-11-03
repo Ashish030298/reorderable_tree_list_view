@@ -68,8 +68,10 @@ class _BasicThemingStoryState extends State<_BasicThemingStory> {
         theme: TreeTheme(
           indentSize: indentSize,
         ),
-        itemBuilder: (context, path) => StoryItemBuilder.buildFileItem(context, path),
-        folderBuilder: (context, path) => StoryItemBuilder.buildFolderItem(context, path),
+        itemBuilder: (context, path) =>
+            StoryItemBuilder.buildFileItem(context, path),
+        folderBuilder: (context, path) =>
+            StoryItemBuilder.buildFolderItem(context, path),
         onReorder: (oldPath, newPath) {
           setState(() {
             paths.remove(oldPath);
@@ -124,8 +126,10 @@ class _AdvancedStylingStoryState extends State<_AdvancedStylingStory> {
       child: ReorderableTreeListView(
         paths: paths,
         theme: _getThemePreset(themePreset, borderRadius),
-        itemBuilder: (context, path) => StoryItemBuilder.buildFileItem(context, path),
-        folderBuilder: (context, path) => StoryItemBuilder.buildFolderItem(context, path),
+        itemBuilder: (context, path) =>
+            StoryItemBuilder.buildFileItem(context, path),
+        folderBuilder: (context, path) =>
+            StoryItemBuilder.buildFolderItem(context, path),
         onReorder: (oldPath, newPath) {
           setState(() {
             paths.remove(oldPath);
@@ -141,7 +145,8 @@ class _AdvancedStylingStoryState extends State<_AdvancedStylingStory> {
       case 'rounded':
         return TreeTheme(
           indentSize: 32.0,
-          itemPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          itemPadding:
+              const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           borderRadius: BorderRadius.circular(borderRadius),
           hoverColor: Colors.blue.withValues(alpha: 0.08),
           focusColor: Colors.blue.withValues(alpha: 0.16),
@@ -151,7 +156,8 @@ class _AdvancedStylingStoryState extends State<_AdvancedStylingStory> {
       case 'minimal':
         return TreeTheme(
           indentSize: 24.0,
-          itemPadding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+          itemPadding:
+              const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
           borderRadius: BorderRadius.circular(borderRadius),
           hoverColor: Colors.grey.withValues(alpha: 0.04),
           focusColor: Colors.grey.withValues(alpha: 0.08),
@@ -161,7 +167,8 @@ class _AdvancedStylingStoryState extends State<_AdvancedStylingStory> {
       case 'colorful':
         return TreeTheme(
           indentSize: 40.0,
-          itemPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          itemPadding:
+              const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           borderRadius: BorderRadius.circular(borderRadius),
           hoverColor: Colors.purple.withValues(alpha: 0.08),
           focusColor: Colors.purple.withValues(alpha: 0.16),
@@ -206,19 +213,22 @@ class _DarkModeStoryState extends State<_DarkModeStory> {
     if (useCustomDarkTheme) {
       // Apply custom theme when knob is enabled, regardless of light/dark mode
       theme = TreeTheme(
-        indentSize: 48.0,  // More noticeable indent
-        itemPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),  // Larger padding
-        borderRadius: const BorderRadius.all(Radius.circular(16.0)),  // More rounded
-        hoverColor: Colors.cyan.withValues(alpha: 0.3),  // More visible hover
-        focusColor: Colors.cyan.withValues(alpha: 0.4),  // More visible focus
+        indentSize: 48.0, // More noticeable indent
+        itemPadding: const EdgeInsets.symmetric(
+            horizontal: 20.0, vertical: 12.0), // Larger padding
+        borderRadius:
+            const BorderRadius.all(Radius.circular(16.0)), // More rounded
+        hoverColor: Colors.cyan.withValues(alpha: 0.3), // More visible hover
+        focusColor: Colors.cyan.withValues(alpha: 0.4), // More visible focus
         splashColor: Colors.cyan.withValues(alpha: 0.3),
         highlightColor: Colors.cyan.withValues(alpha: 0.2),
       );
     } else {
       theme = TreeTheme(
-        indentSize: 24.0,  // Smaller indent for contrast
-        itemPadding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),  // Smaller padding
-        borderRadius: BorderRadius.zero,  // No rounding
+        indentSize: 24.0, // Smaller indent for contrast
+        itemPadding: const EdgeInsets.symmetric(
+            horizontal: 8.0, vertical: 4.0), // Smaller padding
+        borderRadius: BorderRadius.zero, // No rounding
       );
     }
 
@@ -243,7 +253,7 @@ class _DarkModeStoryState extends State<_DarkModeStory> {
             ),
           ),
           const SizedBox(height: 16),
-          
+
           // Tree view
           Expanded(
             child: Container(
@@ -252,7 +262,7 @@ class _DarkModeStoryState extends State<_DarkModeStory> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Theme(
-                data: useCustomDarkTheme 
+                data: useCustomDarkTheme
                     ? ThemeData.dark().copyWith(
                         // Dark theme overrides
                         scaffoldBackgroundColor: Colors.grey.shade900,
@@ -295,7 +305,7 @@ class _DarkModeStoryState extends State<_DarkModeStory> {
     final String displayName = TreePath.getDisplayName(path);
     final String extension = displayName.split('.').last.toLowerCase();
     final IconData icon = _getFileIcon(extension);
-    
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.black.withValues(alpha: 0.3),
@@ -322,7 +332,7 @@ class _DarkModeStoryState extends State<_DarkModeStory> {
 
   Widget _buildDarkThemeFolder(BuildContext context, Uri path) {
     final String displayName = TreePath.getDisplayName(path);
-    
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.cyan.withValues(alpha: 0.1),
@@ -413,7 +423,7 @@ class _MaterialDesignStoryState extends State<_MaterialDesignStory> {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    
+
     final String colorSource = context.knobs.options(
       label: 'Color Source',
       initial: 'primary',
@@ -449,15 +459,18 @@ class _MaterialDesignStoryState extends State<_MaterialDesignStory> {
         paths: paths,
         theme: TreeTheme(
           indentSize: 32.0,
-          itemPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          itemPadding:
+              const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           borderRadius: const BorderRadius.all(Radius.circular(12.0)),
           hoverColor: accentColor.withValues(alpha: 0.08),
           focusColor: accentColor.withValues(alpha: 0.16),
           splashColor: accentColor.withValues(alpha: 0.12),
           highlightColor: accentColor.withValues(alpha: 0.06),
         ),
-        itemBuilder: (context, path) => _buildMaterialItem(context, path, accentColor),
-        folderBuilder: (context, path) => _buildMaterialFolder(context, path, accentColor),
+        itemBuilder: (context, path) =>
+            _buildMaterialItem(context, path, accentColor),
+        folderBuilder: (context, path) =>
+            _buildMaterialFolder(context, path, accentColor),
         onReorder: (oldPath, newPath) {
           setState(() {
             paths.remove(oldPath);
@@ -470,7 +483,7 @@ class _MaterialDesignStoryState extends State<_MaterialDesignStory> {
 
   Widget _buildMaterialItem(BuildContext context, Uri path, Color accentColor) {
     final String displayName = TreePath.getDisplayName(path);
-    
+
     return ListTile(
       dense: true,
       leading: CircleAvatar(
@@ -487,9 +500,10 @@ class _MaterialDesignStoryState extends State<_MaterialDesignStory> {
     );
   }
 
-  Widget _buildMaterialFolder(BuildContext context, Uri path, Color accentColor) {
+  Widget _buildMaterialFolder(
+      BuildContext context, Uri path, Color accentColor) {
     final String displayName = TreePath.getDisplayName(path);
-    
+
     return ListTile(
       dense: true,
       leading: CircleAvatar(
@@ -540,8 +554,10 @@ class _CustomIndicatorsStoryState extends State<_CustomIndicatorsStory> {
           indentSize: 32.0,
         ),
         // Custom icons not currently supported - using default
-        itemBuilder: (context, path) => StoryItemBuilder.buildFileItem(context, path),
-        folderBuilder: (context, path) => StoryItemBuilder.buildFolderItem(context, path),
+        itemBuilder: (context, path) =>
+            StoryItemBuilder.buildFileItem(context, path),
+        folderBuilder: (context, path) =>
+            StoryItemBuilder.buildFolderItem(context, path),
         onReorder: (oldPath, newPath) {
           setState(() {
             paths.remove(oldPath);

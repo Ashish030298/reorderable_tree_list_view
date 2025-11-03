@@ -117,7 +117,7 @@ class ReorderableTreeListViewItem extends StatelessWidget {
   void _handleActivation(BuildContext context) {
     // Always call the onTap callback if provided
     onTap?.call();
-    
+
     // Also try to find ActivateNodeIntent action
     final Action<ActivateNodeIntent>? action =
         Actions.maybeFind<ActivateNodeIntent>(context);
@@ -153,9 +153,7 @@ class ReorderableTreeListViewItem extends StatelessWidget {
     Widget content = Row(
       children: <Widget>[
         // Indentation
-        SizedBox(
-          width: node.depth * indentSize,
-        ),
+        SizedBox(width: node.depth * indentSize),
         // Expansion icon for nodes with children
         if (hasChildren) ...<Widget>[
           SizedBox(
@@ -167,10 +165,7 @@ class ReorderableTreeListViewItem extends StatelessWidget {
                   ? AnimatedRotation(
                       turns: isExpanded ? 0.25 : 0.0,
                       duration: const Duration(milliseconds: 200),
-                      child: const Icon(
-                        Icons.keyboard_arrow_right,
-                        size: 18,
-                      ),
+                      child: const Icon(Icons.keyboard_arrow_right, size: 18),
                     )
                   : Icon(
                       isExpanded
@@ -229,14 +224,14 @@ class ReorderableTreeListViewItem extends StatelessWidget {
         // On web, use Listener to capture right-click and prevent browser context menu
         result = Listener(
           onPointerDown: (PointerDownEvent event) {
-            if (event.kind == PointerDeviceKind.mouse && 
+            if (event.kind == PointerDeviceKind.mouse &&
                 event.buttons == kSecondaryButton) {
               // Temporarily disable browser context menu
               BrowserContextMenu.disableContextMenu();
-              
+
               // Call context menu handler
               onContextMenu!(event.position);
-              
+
               // Re-enable browser context menu after a delay
               // This ensures our custom menu has time to show
               Future.delayed(const Duration(milliseconds: 100), () {

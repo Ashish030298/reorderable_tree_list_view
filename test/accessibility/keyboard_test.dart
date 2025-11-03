@@ -9,21 +9,24 @@ import '../test_utils.dart';
 void main() {
   group('Keyboard Accessibility', () {
     testWidgets('should support tab traversal', (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
-        home: Scaffold(
-          body: ReorderableTreeListView(
-            paths: TestUtils.sampleFilePaths,
-            initiallyExpanded: <Uri>{
-              Uri.parse('file:///'),
-              Uri.parse('file:///folder1'),
-              Uri.parse('file:///folder2'),
-              Uri.parse('file:///folder2/subfolder'),
-            },
-            selectionMode: SelectionMode.single,
-            itemBuilder: (context, path) => Text(TreePath.getDisplayName(path)),
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: ReorderableTreeListView(
+              paths: TestUtils.sampleFilePaths,
+              initiallyExpanded: <Uri>{
+                Uri.parse('file:///'),
+                Uri.parse('file:///folder1'),
+                Uri.parse('file:///folder2'),
+                Uri.parse('file:///folder2/subfolder'),
+              },
+              selectionMode: SelectionMode.single,
+              itemBuilder: (context, path) =>
+                  Text(TreePath.getDisplayName(path)),
+            ),
           ),
         ),
-      ));
+      );
 
       // Focus on the tree
       await tester.sendKeyEvent(LogicalKeyboardKey.tab);
@@ -47,11 +50,13 @@ void main() {
     });
 
     testWidgets('should navigate with arrow keys', (WidgetTester tester) async {
-      await tester.pumpWidget(TestUtils.createTestApp(
-        paths: TestUtils.sampleFilePaths,
-        selectionMode: SelectionMode.single,
-        enableKeyboardNavigation: true,
-      ));
+      await tester.pumpWidget(
+        TestUtils.createTestApp(
+          paths: TestUtils.sampleFilePaths,
+          selectionMode: SelectionMode.single,
+          enableKeyboardNavigation: true,
+        ),
+      );
 
       // Focus the tree
       await tester.tap(find.byType(ReorderableTreeListView));
@@ -74,16 +79,20 @@ void main() {
       await tester.pump();
     });
 
-    testWidgets('should expand/collapse with Enter key', (WidgetTester tester) async {
-      await tester.pumpWidget(TestUtils.createTestApp(
-        paths: TestUtils.sampleFilePaths,
-        initiallyExpanded: <Uri>{
-          Uri.parse('file:///'),
-          Uri.parse('file:///folder1'),
-          Uri.parse('file:///folder2'),
-          Uri.parse('file:///folder2/subfolder'),
-        },
-      ));
+    testWidgets('should expand/collapse with Enter key', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        TestUtils.createTestApp(
+          paths: TestUtils.sampleFilePaths,
+          initiallyExpanded: <Uri>{
+            Uri.parse('file:///'),
+            Uri.parse('file:///folder1'),
+            Uri.parse('file:///folder2'),
+            Uri.parse('file:///folder2/subfolder'),
+          },
+        ),
+      );
 
       // Focus on a folder
       final Finder folderFinder = TestUtils.findTreeItem('folder1');
@@ -92,22 +101,25 @@ void main() {
 
       // Verify folder and its children are visible
       expect(TestUtils.findTreeItem('file1.txt'), findsOneWidget);
-      
+
       // Note: Complex expand/collapse testing skipped due to folder visibility bug
     });
 
     testWidgets('should select with Space key', (WidgetTester tester) async {
-      await tester.pumpWidget(TestUtils.createTestApp(
-        paths: TestUtils.sampleFilePaths,
-        initiallyExpanded: <Uri>{
-          Uri.parse('file:///'),
-          Uri.parse('file:///folder1'),
-          Uri.parse('file:///folder2'),
-          Uri.parse('file:///folder2/subfolder'),
-        },
-        selectionMode: SelectionMode.multiple,
-        onSelectionChanged: (Set<Uri> selection) {}, // Verifying selection with Space key
-      ));
+      await tester.pumpWidget(
+        TestUtils.createTestApp(
+          paths: TestUtils.sampleFilePaths,
+          initiallyExpanded: <Uri>{
+            Uri.parse('file:///'),
+            Uri.parse('file:///folder1'),
+            Uri.parse('file:///folder2'),
+            Uri.parse('file:///folder2/subfolder'),
+          },
+          selectionMode: SelectionMode.multiple,
+          onSelectionChanged:
+              (Set<Uri> selection) {}, // Verifying selection with Space key
+        ),
+      );
 
       // Focus on first item
       await tester.tap(find.byType(ReorderableTreeListView));
@@ -123,18 +135,18 @@ void main() {
     });
 
     testWidgets('should handle focus indicators', (WidgetTester tester) async {
-      await tester.pumpWidget(TestUtils.createTestApp(
-        paths: TestUtils.sampleFilePaths,
-        initiallyExpanded: <Uri>{
-          Uri.parse('file:///'),
-          Uri.parse('file:///folder1'),
-          Uri.parse('file:///folder2'),
-          Uri.parse('file:///folder2/subfolder'),
-        },
-        theme: const TreeTheme(
-          focusColor: Colors.blue,
+      await tester.pumpWidget(
+        TestUtils.createTestApp(
+          paths: TestUtils.sampleFilePaths,
+          initiallyExpanded: <Uri>{
+            Uri.parse('file:///'),
+            Uri.parse('file:///folder1'),
+            Uri.parse('file:///folder2'),
+            Uri.parse('file:///folder2/subfolder'),
+          },
+          theme: const TreeTheme(focusColor: Colors.blue),
         ),
-      ));
+      );
 
       // Focus the tree
       await tester.tap(find.byType(ReorderableTreeListView));
@@ -142,43 +154,50 @@ void main() {
 
       // Verify tree items are displayed
       expect(find.byType(ReorderableTreeListViewItem), findsWidgets);
-      
+
       // Note: Complex focus decoration testing requires deeper widget inspection
     });
 
-    testWidgets('should not conflict with global shortcuts', (WidgetTester tester) async {
+    testWidgets('should not conflict with global shortcuts', (
+      WidgetTester tester,
+    ) async {
       // Testing global shortcuts interaction
 
-      await tester.pumpWidget(MaterialApp(
-        home: Shortcuts(
-          shortcuts: <LogicalKeySet, Intent>{
-            LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyA):
-                const TreeSelectAllIntent(),
-          },
-          child: Actions(
-            actions: <Type, Action<Intent>>{
-              TreeSelectAllIntent: CallbackAction<TreeSelectAllIntent>(
-                onInvoke: (_) {
-                  // Verify select all action is invoked
-                  return null;
-                },
-              ),
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Shortcuts(
+            shortcuts: <LogicalKeySet, Intent>{
+              LogicalKeySet(
+                LogicalKeyboardKey.control,
+                LogicalKeyboardKey.keyA,
+              ): const TreeSelectAllIntent(),
             },
-            child: Scaffold(
-              body: ReorderableTreeListView(
-                paths: TestUtils.sampleFilePaths,
-                initiallyExpanded: <Uri>{
-                  Uri.parse('file:///'),
-                  Uri.parse('file:///folder1'),
-                  Uri.parse('file:///folder2'),
-                  Uri.parse('file:///folder2/subfolder'),
-                },
-                itemBuilder: (BuildContext context, Uri path) => Text(TreePath.getDisplayName(path)),
+            child: Actions(
+              actions: <Type, Action<Intent>>{
+                TreeSelectAllIntent: CallbackAction<TreeSelectAllIntent>(
+                  onInvoke: (_) {
+                    // Verify select all action is invoked
+                    return null;
+                  },
+                ),
+              },
+              child: Scaffold(
+                body: ReorderableTreeListView(
+                  paths: TestUtils.sampleFilePaths,
+                  initiallyExpanded: <Uri>{
+                    Uri.parse('file:///'),
+                    Uri.parse('file:///folder1'),
+                    Uri.parse('file:///folder2'),
+                    Uri.parse('file:///folder2/subfolder'),
+                  },
+                  itemBuilder: (BuildContext context, Uri path) =>
+                      Text(TreePath.getDisplayName(path)),
+                ),
               ),
             ),
           ),
         ),
-      ));
+      );
 
       // Focus the tree
       await tester.tap(find.byType(ReorderableTreeListView));
@@ -195,19 +214,25 @@ void main() {
       expect(find.byType(ReorderableTreeListView), findsOneWidget);
     });
 
-    testWidgets('should announce focus changes for screen readers', (WidgetTester tester) async {
-      await tester.pumpWidget(TestUtils.createTestApp(
-        paths: TestUtils.sampleFilePaths,
-        initiallyExpanded: <Uri>{
-          Uri.parse('file:///'),
-          Uri.parse('file:///folder1'),
-          Uri.parse('file:///folder2'),
-          Uri.parse('file:///folder2/subfolder'),
-        },
-      ));
+    testWidgets('should announce focus changes for screen readers', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        TestUtils.createTestApp(
+          paths: TestUtils.sampleFilePaths,
+          initiallyExpanded: <Uri>{
+            Uri.parse('file:///'),
+            Uri.parse('file:///folder1'),
+            Uri.parse('file:///folder2'),
+            Uri.parse('file:///folder2/subfolder'),
+          },
+        ),
+      );
 
       // Check semantics
-      final SemanticsNode semantics = tester.getSemantics(find.byType(ReorderableTreeListView));
+      final SemanticsNode semantics = tester.getSemantics(
+        find.byType(ReorderableTreeListView),
+      );
       expect(semantics, isNotNull);
 
       // Focus on first item
@@ -221,19 +246,25 @@ void main() {
       expect(itemSemantics.label, isNotEmpty);
     });
 
-    testWidgets('should provide keyboard navigation help', (WidgetTester tester) async {
-      await tester.pumpWidget(TestUtils.createTestApp(
-        paths: TestUtils.sampleFilePaths,
-        initiallyExpanded: <Uri>{
-          Uri.parse('file:///'),
-          Uri.parse('file:///folder1'),
-          Uri.parse('file:///folder2'),
-          Uri.parse('file:///folder2/subfolder'),
-        },
-      ));
+    testWidgets('should provide keyboard navigation help', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        TestUtils.createTestApp(
+          paths: TestUtils.sampleFilePaths,
+          initiallyExpanded: <Uri>{
+            Uri.parse('file:///'),
+            Uri.parse('file:///folder1'),
+            Uri.parse('file:///folder2'),
+            Uri.parse('file:///folder2/subfolder'),
+          },
+        ),
+      );
 
       // The tree should have semantic hints for keyboard navigation
-      final SemanticsNode semantics = tester.getSemantics(find.byType(ReorderableTreeListView));
+      final SemanticsNode semantics = tester.getSemantics(
+        find.byType(ReorderableTreeListView),
+      );
       expect(semantics, isNotNull);
     });
   });

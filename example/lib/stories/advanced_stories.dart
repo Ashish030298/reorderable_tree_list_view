@@ -106,7 +106,8 @@ class _FileExplorerStoryState extends State<_FileExplorerStory> {
   Widget build(BuildContext context) {
     return StoryWrapper(
       title: 'File Explorer',
-      description: 'Full-featured file explorer with context menus and selection',
+      description:
+          'Full-featured file explorer with context menus and selection',
       child: Column(
         children: [
           // Toolbar
@@ -130,7 +131,8 @@ class _FileExplorerStoryState extends State<_FileExplorerStory> {
                 ),
                 IconButton(
                   icon: const Icon(Icons.arrow_forward),
-                  onPressed: () => setState(() => lastAction = 'Navigate forward'),
+                  onPressed: () =>
+                      setState(() => lastAction = 'Navigate forward'),
                   tooltip: 'Forward',
                 ),
                 const VerticalDivider(),
@@ -157,7 +159,7 @@ class _FileExplorerStoryState extends State<_FileExplorerStory> {
               ],
             ),
           ),
-          
+
           // File tree
           Expanded(
             child: ReorderableTreeListView(
@@ -189,7 +191,7 @@ class _FileExplorerStoryState extends State<_FileExplorerStory> {
               onContextMenu: _handleContextMenu,
             ),
           ),
-          
+
           // Status bar
           Container(
             height: 24,
@@ -224,10 +226,13 @@ class _FileExplorerStoryState extends State<_FileExplorerStory> {
   Widget _buildFileItem(BuildContext context, Uri path) {
     // final String displayName = TreePath.getDisplayName(path);
     final bool isSelected = selectedPaths.contains(path);
-    
+
     return Container(
       color: isSelected
-          ? Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3)
+          ? Theme.of(context)
+              .colorScheme
+              .primaryContainer
+              .withValues(alpha: 0.3)
           : null,
       child: StoryItemBuilder.buildFileItem(context, path),
     );
@@ -236,10 +241,13 @@ class _FileExplorerStoryState extends State<_FileExplorerStory> {
   Widget _buildFolderItem(BuildContext context, Uri path) {
     // final String displayName = TreePath.getDisplayName(path);
     final bool isSelected = selectedPaths.contains(path);
-    
+
     return Container(
       color: isSelected
-          ? Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3)
+          ? Theme.of(context)
+              .colorScheme
+              .primaryContainer
+              .withValues(alpha: 0.3)
           : null,
       child: StoryItemBuilder.buildFolderItem(context, path),
     );
@@ -295,7 +303,7 @@ class _ProjectNavigatorStoryState extends State<_ProjectNavigatorStory> {
 
   List<Uri> get filteredPaths {
     if (searchQuery.isEmpty) return paths;
-    
+
     return paths.where((path) {
       final String pathStr = path.toString().toLowerCase();
       return pathStr.contains(searchQuery.toLowerCase());
@@ -352,7 +360,7 @@ class _ProjectNavigatorStoryState extends State<_ProjectNavigatorStory> {
                     ],
                   ),
                 ),
-                
+
                 // Search box
                 Padding(
                   padding: const EdgeInsets.all(8),
@@ -368,17 +376,20 @@ class _ProjectNavigatorStoryState extends State<_ProjectNavigatorStory> {
                     onChanged: (value) => setState(() => searchQuery = value),
                   ),
                 ),
-                
+
                 // File tree
                 Expanded(
                   child: ReorderableTreeListView(
                     paths: filteredPaths,
                     theme: const TreeTheme(
                       indentSize: 20,
-                      itemPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      itemPadding:
+                          EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     ),
-                    itemBuilder: (context, path) => _buildProjectItem(context, path),
-                    folderBuilder: (context, path) => _buildProjectFolder(context, path),
+                    itemBuilder: (context, path) =>
+                        _buildProjectItem(context, path),
+                    folderBuilder: (context, path) =>
+                        _buildProjectFolder(context, path),
                     onItemActivated: (path) {
                       setState(() {
                         activeFile = path;
@@ -390,7 +401,7 @@ class _ProjectNavigatorStoryState extends State<_ProjectNavigatorStory> {
               ],
             ),
           ),
-          
+
           // Editor area
           Expanded(
             child: Container(
@@ -402,7 +413,9 @@ class _ProjectNavigatorStoryState extends State<_ProjectNavigatorStory> {
                         Container(
                           height: 35,
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .surfaceContainerHighest,
                             border: Border(
                               bottom: BorderSide(
                                 color: Theme.of(context).dividerColor,
@@ -412,7 +425,8 @@ class _ProjectNavigatorStoryState extends State<_ProjectNavigatorStory> {
                           child: Row(
                             children: [
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).colorScheme.surface,
                                   border: Border(
@@ -428,7 +442,8 @@ class _ProjectNavigatorStoryState extends State<_ProjectNavigatorStory> {
                                     Text(TreePath.getDisplayName(activeFile!)),
                                     const SizedBox(width: 8),
                                     InkWell(
-                                      onTap: () => setState(() => activeFile = null),
+                                      onTap: () =>
+                                          setState(() => activeFile = null),
                                       child: const Icon(Icons.close, size: 16),
                                     ),
                                   ],
@@ -437,7 +452,7 @@ class _ProjectNavigatorStoryState extends State<_ProjectNavigatorStory> {
                             ],
                           ),
                         ),
-                        
+
                         // Editor content
                         Expanded(
                           child: SingleChildScrollView(
@@ -469,10 +484,13 @@ class _ProjectNavigatorStoryState extends State<_ProjectNavigatorStory> {
   Widget _buildProjectItem(BuildContext context, Uri path) {
     final String displayName = TreePath.getDisplayName(path);
     final bool isActive = path == activeFile;
-    
+
     return Container(
       color: isActive
-          ? Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3)
+          ? Theme.of(context)
+              .colorScheme
+              .primaryContainer
+              .withValues(alpha: 0.3)
           : null,
       child: Row(
         children: [
@@ -498,7 +516,7 @@ class _ProjectNavigatorStoryState extends State<_ProjectNavigatorStory> {
 
   Widget _buildProjectFolder(BuildContext context, Uri path) {
     final String displayName = TreePath.getDisplayName(path);
-    
+
     return Row(
       children: [
         Icon(
@@ -522,7 +540,8 @@ class _ProjectNavigatorStoryState extends State<_ProjectNavigatorStory> {
 
   IconData _getFileIcon(String fileName) {
     if (fileName.endsWith('.dart')) return Icons.code;
-    if (fileName.endsWith('.yaml') || fileName.endsWith('.yml')) return Icons.settings;
+    if (fileName.endsWith('.yaml') || fileName.endsWith('.yml'))
+      return Icons.settings;
     if (fileName.endsWith('.md')) return Icons.description;
     if (fileName.endsWith('.gitignore')) return Icons.block;
     return Icons.insert_drive_file;
@@ -530,7 +549,8 @@ class _ProjectNavigatorStoryState extends State<_ProjectNavigatorStory> {
 
   Color _getFileIconColor(String fileName) {
     if (fileName.endsWith('.dart')) return Colors.blue;
-    if (fileName.endsWith('.yaml') || fileName.endsWith('.yml')) return Colors.green;
+    if (fileName.endsWith('.yaml') || fileName.endsWith('.yml'))
+      return Colors.green;
     if (fileName.endsWith('.md')) return Colors.grey;
     if (fileName.endsWith('.gitignore')) return Colors.red;
     return Colors.grey;
@@ -538,7 +558,7 @@ class _ProjectNavigatorStoryState extends State<_ProjectNavigatorStory> {
 
   String _getFileContent(Uri path) {
     final String fileName = TreePath.getDisplayName(path);
-    
+
     if (fileName.endsWith('.dart')) {
       return '''import 'package:flutter/material.dart';
 
@@ -553,7 +573,7 @@ class ${_getClassName(fileName)} extends StatelessWidget {
   }
 }''';
     }
-    
+
     if (fileName == 'pubspec.yaml') {
       return '''name: reorderable_tree_list_view
 description: A Flutter widget for displaying hierarchical data
@@ -571,7 +591,7 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^2.0.0''';
     }
-    
+
     if (fileName == 'README.md') {
       return '''# ReorderableTreeListView
 
@@ -597,7 +617,7 @@ ReorderableTreeListView(
 )
 ```''';
     }
-    
+
     return '// Content of $fileName';
   }
 
@@ -633,7 +653,7 @@ class _PersistentStateStoryState extends State<_PersistentStateStory> {
     setState(() {
       savedExpandedPaths = Set.from(expandedPaths);
     });
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Expansion state saved'),
@@ -646,7 +666,7 @@ class _PersistentStateStoryState extends State<_PersistentStateStory> {
     setState(() {
       expandedPaths = Set.from(savedExpandedPaths);
     });
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Expansion state restored'),
@@ -660,7 +680,7 @@ class _PersistentStateStoryState extends State<_PersistentStateStory> {
       expandedPaths.clear();
       savedExpandedPaths.clear();
     });
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('State cleared'),
@@ -716,14 +736,16 @@ class _PersistentStateStoryState extends State<_PersistentStateStory> {
             ),
           ),
           const SizedBox(height: 16),
-          
+
           // Tree view
           Expanded(
             child: ReorderableTreeListView(
               paths: paths,
               initiallyExpanded: expandedPaths,
-              itemBuilder: (context, path) => StoryItemBuilder.buildFileItem(context, path),
-              folderBuilder: (context, path) => StoryItemBuilder.buildFolderItem(context, path),
+              itemBuilder: (context, path) =>
+                  StoryItemBuilder.buildFileItem(context, path),
+              folderBuilder: (context, path) =>
+                  StoryItemBuilder.buildFolderItem(context, path),
               onExpandStart: (path) {
                 setState(() {
                   expandedPaths.add(path);
@@ -748,7 +770,6 @@ class _PersistentStateStoryState extends State<_PersistentStateStory> {
   }
 }
 
-
 /// Custom shortcuts story
 class _CustomShortcutsStory extends StatefulWidget {
   const _CustomShortcutsStory();
@@ -770,7 +791,8 @@ class _CustomShortcutsStoryState extends State<_CustomShortcutsStory> {
 
   void _logAction(String action) {
     setState(() {
-      actionLog.insert(0, '${DateTime.now().toLocal().toString().split(' ')[1].split('.')[0]} - $action');
+      actionLog.insert(0,
+          '${DateTime.now().toLocal().toString().split(' ')[1].split('.')[0]} - $action');
       if (actionLog.length > 20) {
         actionLog.removeLast();
       }
@@ -779,7 +801,7 @@ class _CustomShortcutsStoryState extends State<_CustomShortcutsStory> {
 
   void _duplicateItem() {
     if (selectedPath == null) return;
-    
+
     setState(() {
       final String baseName = TreePath.getDisplayName(selectedPath!);
       final String newName = '${baseName}_copy';
@@ -787,7 +809,7 @@ class _CustomShortcutsStoryState extends State<_CustomShortcutsStory> {
       final Uri newPath = parentPath != null
           ? parentPath.resolve(newName)
           : Uri.parse('file:///$newName');
-      
+
       paths.add(newPath);
       _logAction('Duplicated: $baseName → $newName');
     });
@@ -795,7 +817,7 @@ class _CustomShortcutsStoryState extends State<_CustomShortcutsStory> {
 
   void _deleteItem() {
     if (selectedPath == null) return;
-    
+
     setState(() {
       final String name = TreePath.getDisplayName(selectedPath!);
       paths.remove(selectedPath!);
@@ -806,7 +828,7 @@ class _CustomShortcutsStoryState extends State<_CustomShortcutsStory> {
 
   void _renameItem() {
     if (selectedPath == null) return;
-    
+
     final String currentName = TreePath.getDisplayName(selectedPath!);
     _logAction('Rename: $currentName (not implemented in demo)');
   }
@@ -863,15 +885,15 @@ class _CustomShortcutsStoryState extends State<_CustomShortcutsStory> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 // Tree view with shortcuts
                 Expanded(
                   child: Shortcuts(
                     shortcuts: <LogicalKeySet, Intent>{
-                      LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyD):
-                          const _DuplicateIntent(),
+                      LogicalKeySet(LogicalKeyboardKey.control,
+                          LogicalKeyboardKey.keyD): const _DuplicateIntent(),
                       LogicalKeySet(LogicalKeyboardKey.delete):
                           const _DeleteIntent(),
                       LogicalKeySet(LogicalKeyboardKey.f2):
@@ -894,20 +916,25 @@ class _CustomShortcutsStoryState extends State<_CustomShortcutsStory> {
                         child: ReorderableTreeListView(
                           paths: paths,
                           selectionMode: SelectionMode.single,
-                          itemBuilder: (context, path) => StoryItemBuilder.buildFileItem(context, path),
-                          folderBuilder: (context, path) => StoryItemBuilder.buildFolderItem(context, path),
+                          itemBuilder: (context, path) =>
+                              StoryItemBuilder.buildFileItem(context, path),
+                          folderBuilder: (context, path) =>
+                              StoryItemBuilder.buildFolderItem(context, path),
                           onReorder: (oldPath, newPath) {
                             setState(() {
                               paths.remove(oldPath);
                               paths.add(newPath);
-                              _logAction('Moved: ${TreePath.getDisplayName(oldPath)}');
+                              _logAction(
+                                  'Moved: ${TreePath.getDisplayName(oldPath)}');
                             });
                           },
                           onSelectionChanged: (selection) {
                             setState(() {
-                              selectedPath = selection.isEmpty ? null : selection.first;
+                              selectedPath =
+                                  selection.isEmpty ? null : selection.first;
                               if (selectedPath != null) {
-                                _logAction('Selected: ${TreePath.getDisplayName(selectedPath!)}');
+                                _logAction(
+                                    'Selected: ${TreePath.getDisplayName(selectedPath!)}');
                               }
                             });
                           },
@@ -919,9 +946,9 @@ class _CustomShortcutsStoryState extends State<_CustomShortcutsStory> {
               ],
             ),
           ),
-          
+
           const SizedBox(width: 16),
-          
+
           // Action log
           SizedBox(
             width: 300,
@@ -959,9 +986,12 @@ class _CustomShortcutsStoryState extends State<_CustomShortcutsStory> {
                                 padding: const EdgeInsets.only(bottom: 4),
                                 child: Text(
                                   actionLog[index],
-                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    fontFamily: 'monospace',
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        fontFamily: 'monospace',
+                                      ),
                                 ),
                               ),
                             ),

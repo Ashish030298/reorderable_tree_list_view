@@ -547,12 +547,14 @@ class _ReorderableTreeListViewState extends State<ReorderableTreeListView> {
             _eventController.notifyItemTap(node.path);
             if (widget.selectionMode != SelectionMode.none) {
               _keyboardController.setFocus(node.path);
-              
+
               // Check for modifier keys
-              final bool isShiftPressed = HardwareKeyboard.instance.isShiftPressed;
-              final bool isControlPressed = HardwareKeyboard.instance.isControlPressed ||
+              final bool isShiftPressed =
+                  HardwareKeyboard.instance.isShiftPressed;
+              final bool isControlPressed =
+                  HardwareKeyboard.instance.isControlPressed ||
                   HardwareKeyboard.instance.isMetaPressed;
-              
+
               // Handle selection with modifier key support
               _keyboardController.handleItemClick(
                 node.path,
@@ -570,26 +572,32 @@ class _ReorderableTreeListViewState extends State<ReorderableTreeListView> {
           child: userContent,
         );
       },
-      onReorder: widget.enableDragAndDrop ? (int oldIndex, int newIndex) {
-        _handleReorder(oldIndex, newIndex, visibleNodes);
-      } : (int oldIndex, int newIndex) {
-        // No-op when drag and drop is disabled
-      },
-      onReorderStart: widget.enableDragAndDrop ? (int index) {
-        final Uri path = visibleNodes[index].path;
-        _draggingPath = path;
-        // Check if drag is allowed
-        if (!_eventController.canDrag(path)) {
-          // no op
-        }
-        _eventController.notifyDragStart(path);
-      } : null,
-      onReorderEnd: widget.enableDragAndDrop ? (int index) {
-        if (_draggingPath != null) {
-          _eventController.notifyDragEnd(_draggingPath!);
-          _draggingPath = null;
-        }
-      } : null,
+      onReorder: widget.enableDragAndDrop
+          ? (int oldIndex, int newIndex) {
+              _handleReorder(oldIndex, newIndex, visibleNodes);
+            }
+          : (int oldIndex, int newIndex) {
+              // No-op when drag and drop is disabled
+            },
+      onReorderStart: widget.enableDragAndDrop
+          ? (int index) {
+              final Uri path = visibleNodes[index].path;
+              _draggingPath = path;
+              // Check if drag is allowed
+              if (!_eventController.canDrag(path)) {
+                // no op
+              }
+              _eventController.notifyDragStart(path);
+            }
+          : null,
+      onReorderEnd: widget.enableDragAndDrop
+          ? (int index) {
+              if (_draggingPath != null) {
+                _eventController.notifyDragEnd(_draggingPath!);
+                _draggingPath = null;
+              }
+            }
+          : null,
       proxyDecorator: widget.proxyDecorator,
     );
 

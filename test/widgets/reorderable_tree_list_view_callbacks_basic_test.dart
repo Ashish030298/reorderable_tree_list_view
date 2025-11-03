@@ -18,7 +18,8 @@ void main() {
             body: ReorderableTreeListView(
               paths: paths,
               initiallyExpanded: <Uri>{Uri.parse('file:///')},
-              itemBuilder: (BuildContext context, Uri path) => Text(path.toString()),
+              itemBuilder: (BuildContext context, Uri path) =>
+                  Text(path.toString()),
               onItemTap: tappedPaths.add,
             ),
           ),
@@ -32,7 +33,9 @@ void main() {
       expect(tappedPaths, contains(Uri.parse('file:///file1.txt')));
     });
 
-    testWidgets('invokes onSelectionChanged callback', (WidgetTester tester) async {
+    testWidgets('invokes onSelectionChanged callback', (
+      WidgetTester tester,
+    ) async {
       final List<Set<Uri>> selectionChanges = <Set<Uri>>[];
 
       final List<Uri> paths = <Uri>[
@@ -46,7 +49,8 @@ void main() {
             body: ReorderableTreeListView(
               paths: paths,
               initiallyExpanded: <Uri>{Uri.parse('file:///')},
-              itemBuilder: (BuildContext context, Uri path) => Text(path.toString()),
+              itemBuilder: (BuildContext context, Uri path) =>
+                  Text(path.toString()),
               selectionMode: SelectionMode.single,
               onSelectionChanged: selectionChanges.add,
             ),
@@ -77,11 +81,12 @@ void main() {
               paths: paths,
               initiallyExpanded: <Uri>{Uri.parse('file:///')},
               itemBuilder: (BuildContext context, Uri path) => SizedBox(
-                    key: ValueKey<String>(path.toString()),
-                    height: 60,
-                    child: Text(path.toString()),
-                  ),
-              onReorder: (Uri oldPath, Uri newPath) => reorders.add((oldPath, newPath)),
+                key: ValueKey<String>(path.toString()),
+                height: 60,
+                child: Text(path.toString()),
+              ),
+              onReorder: (Uri oldPath, Uri newPath) =>
+                  reorders.add((oldPath, newPath)),
             ),
           ),
         ),
@@ -92,7 +97,7 @@ void main() {
       final widget = tester.widget<ReorderableTreeListView>(
         find.byType(ReorderableTreeListView),
       );
-      
+
       if (widget.onReorder != null) {
         widget.onReorder!(
           Uri.parse('file:///file1.txt'),

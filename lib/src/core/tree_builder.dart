@@ -42,7 +42,9 @@ class TreeBuilder {
     // First, collect all intermediate paths to identify folders
     final Set<Uri> allIntermediatePaths = <Uri>{};
     for (final Uri path in originalPaths) {
-      final List<Uri> intermediatePaths = TreePath.generateIntermediatePaths(path);
+      final List<Uri> intermediatePaths = TreePath.generateIntermediatePaths(
+        path,
+      );
       allIntermediatePaths.addAll(intermediatePaths);
     }
 
@@ -55,7 +57,9 @@ class TreeBuilder {
       allPaths[path] = isLeaf;
 
       // Generate and add all intermediate paths as folders
-      final List<Uri> intermediatePaths = TreePath.generateIntermediatePaths(path);
+      final List<Uri> intermediatePaths = TreePath.generateIntermediatePaths(
+        path,
+      );
       for (final Uri intermediatePath in intermediatePaths) {
         // Intermediate paths are always folders
         allPaths.putIfAbsent(intermediatePath, () => false);
@@ -84,7 +88,7 @@ class TreeBuilder {
     // Create a map to quickly find children of each node
     final Map<Uri, List<TreeNode>> childrenMap = <Uri, List<TreeNode>>{};
     final Set<TreeNode> processedNodes = <TreeNode>{};
-    
+
     // Build parent-child relationships
     for (final TreeNode node in nodes) {
       final Uri? parentPath = node.parentPath;
@@ -92,52 +96,56 @@ class TreeBuilder {
         childrenMap.putIfAbsent(parentPath, () => <TreeNode>[]).add(node);
       }
     }
-    
+
     // Sort children within each parent
     for (final List<TreeNode> children in childrenMap.values) {
       children.sort((TreeNode a, TreeNode b) {
         // First by scheme
         final int schemeCompare = a.path.scheme.compareTo(b.path.scheme);
         if (schemeCompare != 0) return schemeCompare;
-        
+
         // Then alphabetically by display name
-        return a.displayName.toLowerCase().compareTo(b.displayName.toLowerCase());
+        return a.displayName.toLowerCase().compareTo(
+          b.displayName.toLowerCase(),
+        );
       });
     }
-    
+
     // Rebuild the list in hierarchical order
     final List<TreeNode> sortedNodes = <TreeNode>[];
-    
+
     // Find root nodes (nodes with no parent)
-    final List<TreeNode> rootNodes = nodes.where((node) => node.parentPath == null).toList();
+    final List<TreeNode> rootNodes = nodes
+        .where((node) => node.parentPath == null)
+        .toList();
     rootNodes.sort((TreeNode a, TreeNode b) {
       // First by scheme
       final int schemeCompare = a.path.scheme.compareTo(b.path.scheme);
       if (schemeCompare != 0) return schemeCompare;
-      
+
       // Then alphabetically
       return a.displayName.toLowerCase().compareTo(b.displayName.toLowerCase());
     });
-    
+
     // Recursively add nodes in hierarchical order
     void addNodeAndChildren(TreeNode node) {
       if (processedNodes.contains(node)) return;
-      
+
       sortedNodes.add(node);
       processedNodes.add(node);
-      
+
       // Add children immediately after parent
       final List<TreeNode> children = childrenMap[node.path] ?? <TreeNode>[];
       for (final TreeNode child in children) {
         addNodeAndChildren(child);
       }
     }
-    
+
     // Process all root nodes and their descendants
     for (final TreeNode rootNode in rootNodes) {
       addNodeAndChildren(rootNode);
     }
-    
+
     // Replace the original list with the sorted one
     nodes.clear();
     nodes.addAll(sortedNodes);

@@ -7,37 +7,39 @@ import '../test_utils.dart';
 void main() {
   group('Visual Regression Tests', () {
     testWidgets('basic tree structure', (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
-        theme: ThemeData(useMaterial3: true),
-        home: Scaffold(
-          body: ReorderableTreeListView(
-            paths: TestUtils.sampleFilePaths,
-            initiallyExpanded: <Uri>{
-              Uri.parse('file:///'),
-              Uri.parse('file:///folder1'),
-              Uri.parse('file:///folder2'),
-              Uri.parse('file:///folder2/subfolder'),
-            },
-            itemBuilder: (BuildContext context, Uri path) => Row(
-              children: [
-                const Icon(Icons.insert_drive_file, size: 20),
-                const SizedBox(width: 8),
-                Text(TreePath.getDisplayName(path)),
-              ],
-            ),
-            folderBuilder: (BuildContext context, Uri path) => Row(
-              children: [
-                const Icon(Icons.folder, size: 20, color: Colors.amber),
-                const SizedBox(width: 8),
-                Text(
-                  TreePath.getDisplayName(path),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: ThemeData(useMaterial3: true),
+          home: Scaffold(
+            body: ReorderableTreeListView(
+              paths: TestUtils.sampleFilePaths,
+              initiallyExpanded: <Uri>{
+                Uri.parse('file:///'),
+                Uri.parse('file:///folder1'),
+                Uri.parse('file:///folder2'),
+                Uri.parse('file:///folder2/subfolder'),
+              },
+              itemBuilder: (BuildContext context, Uri path) => Row(
+                children: [
+                  const Icon(Icons.insert_drive_file, size: 20),
+                  const SizedBox(width: 8),
+                  Text(TreePath.getDisplayName(path)),
+                ],
+              ),
+              folderBuilder: (BuildContext context, Uri path) => Row(
+                children: [
+                  const Icon(Icons.folder, size: 20, color: Colors.amber),
+                  const SizedBox(width: 8),
+                  Text(
+                    TreePath.getDisplayName(path),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ));
+      );
 
       await expectLater(
         find.byType(ReorderableTreeListView),
@@ -46,38 +48,40 @@ void main() {
     });
 
     testWidgets('expanded tree structure', (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
-        theme: ThemeData(useMaterial3: true),
-        home: Scaffold(
-          body: ReorderableTreeListView(
-            paths: TestUtils.sampleFilePaths,
-            initiallyExpanded: <Uri>{
-              Uri.parse('file:///'),
-              Uri.parse('file:///folder1'),
-              Uri.parse('file:///folder2'),
-              Uri.parse('file:///folder2/subfolder'),
-            },
-            theme: const TreeTheme(),
-            itemBuilder: (BuildContext context, Uri path) => Row(
-              children: [
-                const Icon(Icons.insert_drive_file, size: 20),
-                const SizedBox(width: 8),
-                Text(TreePath.getDisplayName(path)),
-              ],
-            ),
-            folderBuilder: (BuildContext context, Uri path) => Row(
-              children: [
-                const Icon(Icons.folder, size: 20, color: Colors.amber),
-                const SizedBox(width: 8),
-                Text(
-                  TreePath.getDisplayName(path),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: ThemeData(useMaterial3: true),
+          home: Scaffold(
+            body: ReorderableTreeListView(
+              paths: TestUtils.sampleFilePaths,
+              initiallyExpanded: <Uri>{
+                Uri.parse('file:///'),
+                Uri.parse('file:///folder1'),
+                Uri.parse('file:///folder2'),
+                Uri.parse('file:///folder2/subfolder'),
+              },
+              theme: const TreeTheme(),
+              itemBuilder: (BuildContext context, Uri path) => Row(
+                children: [
+                  const Icon(Icons.insert_drive_file, size: 20),
+                  const SizedBox(width: 8),
+                  Text(TreePath.getDisplayName(path)),
+                ],
+              ),
+              folderBuilder: (BuildContext context, Uri path) => Row(
+                children: [
+                  const Icon(Icons.folder, size: 20, color: Colors.amber),
+                  const SizedBox(width: 8),
+                  Text(
+                    TreePath.getDisplayName(path),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ));
+      );
 
       await expectLater(
         find.byType(ReorderableTreeListView),
@@ -86,41 +90,43 @@ void main() {
     });
 
     testWidgets('dark theme', (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
-        theme: ThemeData.dark(useMaterial3: true),
-        home: Scaffold(
-          body: ReorderableTreeListView(
-            paths: TestUtils.sampleFilePaths,
-            initiallyExpanded: <Uri>{
-              Uri.parse('file:///'),
-              Uri.parse('file:///folder1'),
-              Uri.parse('file:///folder2'),
-              Uri.parse('file:///folder2/subfolder'),
-            },
-            theme: TreeTheme(
-              hoverColor: Colors.white.withValues(alpha: 0.1),
-              focusColor: Colors.white.withValues(alpha: 0.2),
-            ),
-            itemBuilder: (BuildContext context, Uri path) => Row(
-              children: [
-                const Icon(Icons.insert_drive_file, size: 20),
-                const SizedBox(width: 8),
-                Text(TreePath.getDisplayName(path)),
-              ],
-            ),
-            folderBuilder: (BuildContext context, Uri path) => Row(
-              children: [
-                const Icon(Icons.folder, size: 20, color: Colors.amber),
-                const SizedBox(width: 8),
-                Text(
-                  TreePath.getDisplayName(path),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: ThemeData.dark(useMaterial3: true),
+          home: Scaffold(
+            body: ReorderableTreeListView(
+              paths: TestUtils.sampleFilePaths,
+              initiallyExpanded: <Uri>{
+                Uri.parse('file:///'),
+                Uri.parse('file:///folder1'),
+                Uri.parse('file:///folder2'),
+                Uri.parse('file:///folder2/subfolder'),
+              },
+              theme: TreeTheme(
+                hoverColor: Colors.white.withValues(alpha: 0.1),
+                focusColor: Colors.white.withValues(alpha: 0.2),
+              ),
+              itemBuilder: (BuildContext context, Uri path) => Row(
+                children: [
+                  const Icon(Icons.insert_drive_file, size: 20),
+                  const SizedBox(width: 8),
+                  Text(TreePath.getDisplayName(path)),
+                ],
+              ),
+              folderBuilder: (BuildContext context, Uri path) => Row(
+                children: [
+                  const Icon(Icons.folder, size: 20, color: Colors.amber),
+                  const SizedBox(width: 8),
+                  Text(
+                    TreePath.getDisplayName(path),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ));
+      );
 
       await expectLater(
         find.byType(ReorderableTreeListView),
@@ -134,46 +140,54 @@ void main() {
         Uri.parse('file:///folder2/file4.txt'),
       };
 
-      await tester.pumpWidget(MaterialApp(
-        theme: ThemeData(useMaterial3: true),
-        home: Scaffold(
-          body: ReorderableTreeListView(
-            paths: TestUtils.sampleFilePaths,
-            initiallyExpanded: <Uri>{
-              Uri.parse('file:///'),
-              Uri.parse('file:///folder1'),
-              Uri.parse('file:///folder2'),
-              Uri.parse('file:///folder2/subfolder'),
-            },
-            selectionMode: SelectionMode.multiple,
-            initialSelection: selectedPaths,
-            itemBuilder: (BuildContext context, Uri path) {
-              final bool isSelected = selectedPaths.contains(path);
-              return Container(
-                color: isSelected ? Colors.blue.withValues(alpha: 0.2) : null,
-                child: Row(
-                  children: [
-                    if (isSelected) const Icon(Icons.check_circle, size: 20, color: Colors.blue),
-                    if (!isSelected) const Icon(Icons.insert_drive_file, size: 20),
-                    const SizedBox(width: 8),
-                    Text(TreePath.getDisplayName(path)),
-                  ],
-                ),
-              );
-            },
-            folderBuilder: (BuildContext context, Uri path) => Row(
-              children: [
-                const Icon(Icons.folder, size: 20, color: Colors.amber),
-                const SizedBox(width: 8),
-                Text(
-                  TreePath.getDisplayName(path),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: ThemeData(useMaterial3: true),
+          home: Scaffold(
+            body: ReorderableTreeListView(
+              paths: TestUtils.sampleFilePaths,
+              initiallyExpanded: <Uri>{
+                Uri.parse('file:///'),
+                Uri.parse('file:///folder1'),
+                Uri.parse('file:///folder2'),
+                Uri.parse('file:///folder2/subfolder'),
+              },
+              selectionMode: SelectionMode.multiple,
+              initialSelection: selectedPaths,
+              itemBuilder: (BuildContext context, Uri path) {
+                final bool isSelected = selectedPaths.contains(path);
+                return Container(
+                  color: isSelected ? Colors.blue.withValues(alpha: 0.2) : null,
+                  child: Row(
+                    children: [
+                      if (isSelected)
+                        const Icon(
+                          Icons.check_circle,
+                          size: 20,
+                          color: Colors.blue,
+                        ),
+                      if (!isSelected)
+                        const Icon(Icons.insert_drive_file, size: 20),
+                      const SizedBox(width: 8),
+                      Text(TreePath.getDisplayName(path)),
+                    ],
+                  ),
+                );
+              },
+              folderBuilder: (BuildContext context, Uri path) => Row(
+                children: [
+                  const Icon(Icons.folder, size: 20, color: Colors.amber),
+                  const SizedBox(width: 8),
+                  Text(
+                    TreePath.getDisplayName(path),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ));
+      );
 
       await expectLater(
         find.byType(ReorderableTreeListView),
@@ -182,55 +196,60 @@ void main() {
     });
 
     testWidgets('drag feedback visual', (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
-        theme: ThemeData(useMaterial3: true),
-        home: Scaffold(
-          body: ReorderableTreeListView(
-            paths: TestUtils.sampleFilePaths,
-            initiallyExpanded: <Uri>{
-              Uri.parse('file:///'),
-              Uri.parse('file:///folder1'),
-              Uri.parse('file:///folder2'),
-              Uri.parse('file:///folder2/subfolder'),
-            },
-            onReorder: (Uri oldPath, Uri newPath) {},
-            proxyDecorator: (Widget child, int index, Animation<double> animation) {
-              return AnimatedBuilder(
-                animation: animation,
-                builder: (BuildContext context, Widget? child) {
-                  return Material(
-                    elevation: 8,
-                    borderRadius: BorderRadius.circular(8),
-                    shadowColor: Colors.blue.withValues(alpha: 0.5),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.blue.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.blue, width: 2),
-                      ),
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: ThemeData(useMaterial3: true),
+          home: Scaffold(
+            body: ReorderableTreeListView(
+              paths: TestUtils.sampleFilePaths,
+              initiallyExpanded: <Uri>{
+                Uri.parse('file:///'),
+                Uri.parse('file:///folder1'),
+                Uri.parse('file:///folder2'),
+                Uri.parse('file:///folder2/subfolder'),
+              },
+              onReorder: (Uri oldPath, Uri newPath) {},
+              proxyDecorator:
+                  (Widget child, int index, Animation<double> animation) {
+                    return AnimatedBuilder(
+                      animation: animation,
+                      builder: (BuildContext context, Widget? child) {
+                        return Material(
+                          elevation: 8,
+                          borderRadius: BorderRadius.circular(8),
+                          shadowColor: Colors.blue.withValues(alpha: 0.5),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.blue.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: Colors.blue, width: 2),
+                            ),
+                            child: child,
+                          ),
+                        );
+                      },
                       child: child,
-                    ),
-                  );
-                },
-                child: child,
-              );
-            },
-            itemBuilder: (BuildContext context, Uri path) => Row(
-              children: [
-                const Icon(Icons.insert_drive_file, size: 20),
-                const SizedBox(width: 8),
-                Text(TreePath.getDisplayName(path)),
-              ],
+                    );
+                  },
+              itemBuilder: (BuildContext context, Uri path) => Row(
+                children: [
+                  const Icon(Icons.insert_drive_file, size: 20),
+                  const SizedBox(width: 8),
+                  Text(TreePath.getDisplayName(path)),
+                ],
+              ),
             ),
           ),
         ),
-      ));
+      );
 
       // Start drag
       final Finder firstItem = find.byType(ReorderableTreeListViewItem).first;
-      final TestGesture gesture = await tester.startGesture(tester.getCenter(firstItem));
+      final TestGesture gesture = await tester.startGesture(
+        tester.getCenter(firstItem),
+      );
       await tester.pump(const Duration(milliseconds: 100));
-      
+
       // Move slightly to show drag feedback
       await gesture.moveBy(const Offset(0, 20));
       await tester.pump();
@@ -245,43 +264,43 @@ void main() {
     });
 
     testWidgets('custom indentation', (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
-        theme: ThemeData(useMaterial3: true),
-        home: Scaffold(
-          body: ReorderableTreeListView(
-            paths: MockData.deepHierarchy,
-            initiallyExpanded: <Uri>{
-              Uri.parse('file:///'),
-              Uri.parse('file:///l1'),
-              Uri.parse('file:///l1/l2'),
-              Uri.parse('file:///l1/l2/l3'),
-              Uri.parse('file:///l1/l2/l3/l4'),
-              Uri.parse('file:///l1/l2/l3/l4/l5'),
-              Uri.parse('file:///l1/l2/l3/l4/l5/l6'),
-            },
-            theme: const TreeTheme(
-              indentSize: 48,
-            ),
-            itemBuilder: (BuildContext context, Uri path) => Row(
-              children: [
-                const Icon(Icons.insert_drive_file, size: 20),
-                const SizedBox(width: 8),
-                Text(TreePath.getDisplayName(path)),
-              ],
-            ),
-            folderBuilder: (BuildContext context, Uri path) => Row(
-              children: [
-                const Icon(Icons.folder, size: 20, color: Colors.amber),
-                const SizedBox(width: 8),
-                Text(
-                  TreePath.getDisplayName(path),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: ThemeData(useMaterial3: true),
+          home: Scaffold(
+            body: ReorderableTreeListView(
+              paths: MockData.deepHierarchy,
+              initiallyExpanded: <Uri>{
+                Uri.parse('file:///'),
+                Uri.parse('file:///l1'),
+                Uri.parse('file:///l1/l2'),
+                Uri.parse('file:///l1/l2/l3'),
+                Uri.parse('file:///l1/l2/l3/l4'),
+                Uri.parse('file:///l1/l2/l3/l4/l5'),
+                Uri.parse('file:///l1/l2/l3/l4/l5/l6'),
+              },
+              theme: const TreeTheme(indentSize: 48),
+              itemBuilder: (BuildContext context, Uri path) => Row(
+                children: [
+                  const Icon(Icons.insert_drive_file, size: 20),
+                  const SizedBox(width: 8),
+                  Text(TreePath.getDisplayName(path)),
+                ],
+              ),
+              folderBuilder: (BuildContext context, Uri path) => Row(
+                children: [
+                  const Icon(Icons.folder, size: 20, color: Colors.amber),
+                  const SizedBox(width: 8),
+                  Text(
+                    TreePath.getDisplayName(path),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ));
+      );
 
       await expectLater(
         find.byType(ReorderableTreeListView),
@@ -290,47 +309,52 @@ void main() {
     });
 
     testWidgets('compact density', (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
-        theme: ThemeData(
-          useMaterial3: true,
-          visualDensity: VisualDensity.compact,
-        ),
-        home: Scaffold(
-          body: ReorderableTreeListView(
-            paths: TestUtils.sampleFilePaths,
-            initiallyExpanded: <Uri>{
-              Uri.parse('file:///'),
-              Uri.parse('file:///folder1'),
-              Uri.parse('file:///folder2'),
-              Uri.parse('file:///folder2/subfolder'),
-            },
-            theme: const TreeTheme(
-              itemPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-              indentSize: 20,
-            ),
-            itemBuilder: (BuildContext context, Uri path) => Row(
-              children: [
-                const Icon(Icons.insert_drive_file, size: 16),
-                const SizedBox(width: 4),
-                Text(
-                  TreePath.getDisplayName(path),
-                  style: const TextStyle(fontSize: 12),
-                ),
-              ],
-            ),
-            folderBuilder: (BuildContext context, Uri path) => Row(
-              children: [
-                const Icon(Icons.folder, size: 16, color: Colors.amber),
-                const SizedBox(width: 4),
-                Text(
-                  TreePath.getDisplayName(path),
-                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                ),
-              ],
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: ThemeData(
+            useMaterial3: true,
+            visualDensity: VisualDensity.compact,
+          ),
+          home: Scaffold(
+            body: ReorderableTreeListView(
+              paths: TestUtils.sampleFilePaths,
+              initiallyExpanded: <Uri>{
+                Uri.parse('file:///'),
+                Uri.parse('file:///folder1'),
+                Uri.parse('file:///folder2'),
+                Uri.parse('file:///folder2/subfolder'),
+              },
+              theme: const TreeTheme(
+                itemPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                indentSize: 20,
+              ),
+              itemBuilder: (BuildContext context, Uri path) => Row(
+                children: [
+                  const Icon(Icons.insert_drive_file, size: 16),
+                  const SizedBox(width: 4),
+                  Text(
+                    TreePath.getDisplayName(path),
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                ],
+              ),
+              folderBuilder: (BuildContext context, Uri path) => Row(
+                children: [
+                  const Icon(Icons.folder, size: 16, color: Colors.amber),
+                  const SizedBox(width: 4),
+                  Text(
+                    TreePath.getDisplayName(path),
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ));
+      );
 
       await expectLater(
         find.byType(ReorderableTreeListView),
@@ -339,79 +363,84 @@ void main() {
     });
 
     testWidgets('mixed content types', (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
-        theme: ThemeData(useMaterial3: true),
-        home: Scaffold(
-          body: ReorderableTreeListView(
-            paths: MockData.mixedSchemes,
-            initiallyExpanded: <Uri>{
-              Uri.parse('file:///'),
-              Uri.parse('https://'),
-              Uri.parse('https://example.com'),
-              Uri.parse('https://example.com/api'),
-              Uri.parse('ftp://'),
-              Uri.parse('ftp://server.com'),
-              Uri.parse('ftp://server.com/upload'),
-              Uri.parse('custom://'),
-              Uri.parse('custom://app'),
-              Uri.parse('custom://app/settings'),
-            },
-            itemBuilder: (BuildContext context, Uri path) {
-              final String scheme = path.scheme;
-              IconData icon;
-              Color color;
-              
-              switch (scheme) {
-                case 'https':
-                case 'http':
-                  icon = Icons.language;
-                  color = Colors.green;
-                  break;
-                case 'ftp':
-                  icon = Icons.cloud_upload;
-                  color = Colors.blue;
-                  break;
-                case 'custom':
-                  icon = Icons.settings;
-                  color = Colors.purple;
-                  break;
-                default:
-                  icon = Icons.insert_drive_file;
-                  color = Colors.grey;
-              }
-              
-              return Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: color.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Text(
-                      scheme.toUpperCase(),
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                        color: color,
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: ThemeData(useMaterial3: true),
+          home: Scaffold(
+            body: ReorderableTreeListView(
+              paths: MockData.mixedSchemes,
+              initiallyExpanded: <Uri>{
+                Uri.parse('file:///'),
+                Uri.parse('https://'),
+                Uri.parse('https://example.com'),
+                Uri.parse('https://example.com/api'),
+                Uri.parse('ftp://'),
+                Uri.parse('ftp://server.com'),
+                Uri.parse('ftp://server.com/upload'),
+                Uri.parse('custom://'),
+                Uri.parse('custom://app'),
+                Uri.parse('custom://app/settings'),
+              },
+              itemBuilder: (BuildContext context, Uri path) {
+                final String scheme = path.scheme;
+                IconData icon;
+                Color color;
+
+                switch (scheme) {
+                  case 'https':
+                  case 'http':
+                    icon = Icons.language;
+                    color = Colors.green;
+                    break;
+                  case 'ftp':
+                    icon = Icons.cloud_upload;
+                    color = Colors.blue;
+                    break;
+                  case 'custom':
+                    icon = Icons.settings;
+                    color = Colors.purple;
+                    break;
+                  default:
+                    icon = Icons.insert_drive_file;
+                    color = Colors.grey;
+                }
+
+                return Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 4,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: color.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        scheme.toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          color: color,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  Icon(icon, size: 20, color: color),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      TreePath.getDisplayName(path),
-                      overflow: TextOverflow.ellipsis,
+                    const SizedBox(width: 8),
+                    Icon(icon, size: 20, color: color),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        TreePath.getDisplayName(path),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                  ),
-                ],
-              );
-            },
+                  ],
+                );
+              },
+            ),
           ),
         ),
-      ));
+      );
 
       await expectLater(
         find.byType(ReorderableTreeListView),

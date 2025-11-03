@@ -330,98 +330,104 @@ void main() {
       expect(movedTo?.toString(), contains('projectb'));
     });
 
-    testWidgets('should notify when folder is moved (children handled by parent)', (
-      WidgetTester tester,
-    ) async {
-      final List<Uri> paths = <Uri>[
-        Uri.parse('file://root/folder1/file1.txt'),
-        Uri.parse('file://root/folder1/file2.txt'),
-        Uri.parse('file://root/folder1/subfolder/file3.txt'),
-        Uri.parse('file://root/folder2/file4.txt'),
-        Uri.parse('file://root/file5.txt'),
-      ];
+    testWidgets(
+      'should notify when folder is moved (children handled by parent)',
+      (WidgetTester tester) async {
+        final List<Uri> paths = <Uri>[
+          Uri.parse('file://root/folder1/file1.txt'),
+          Uri.parse('file://root/folder1/file2.txt'),
+          Uri.parse('file://root/folder1/subfolder/file3.txt'),
+          Uri.parse('file://root/folder2/file4.txt'),
+          Uri.parse('file://root/file5.txt'),
+        ];
 
-      final List<Uri> reorderHistory = <Uri>[];
+        final List<Uri> reorderHistory = <Uri>[];
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: ReorderableTreeListView(
-              paths: paths,
-              initiallyExpanded: <Uri>{
-                Uri.parse('file://'),
-                Uri.parse('file://root'),
-                Uri.parse('file://root/folder1'),
-                Uri.parse('file://root/folder1/subfolder'),
-                Uri.parse('file://root/folder2'),
-              },
-              itemBuilder: (BuildContext context, Uri path) => Text(
-                path.toString(),
-                key: ValueKey<String>(path.toString()),
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: ReorderableTreeListView(
+                paths: paths,
+                initiallyExpanded: <Uri>{
+                  Uri.parse('file://'),
+                  Uri.parse('file://root'),
+                  Uri.parse('file://root/folder1'),
+                  Uri.parse('file://root/folder1/subfolder'),
+                  Uri.parse('file://root/folder2'),
+                },
+                itemBuilder: (BuildContext context, Uri path) => Text(
+                  path.toString(),
+                  key: ValueKey<String>(path.toString()),
+                ),
+                onReorder: (Uri oldPath, Uri newPath) {
+                  reorderHistory.add(oldPath);
+                  reorderHistory.add(newPath);
+                },
               ),
-              onReorder: (Uri oldPath, Uri newPath) {
-                reorderHistory.add(oldPath);
-                reorderHistory.add(newPath);
-              },
             ),
           ),
-        ),
-      );
+        );
 
-      await tester.pumpAndSettle();
+        await tester.pumpAndSettle();
 
-      // Debug: print all text widgets
-      final Finder allTexts = find.byType(Text);
-      for (final Element element in allTexts.evaluate()) {
-        final Text text = element.widget as Text;
-        if (text.data != null && text.data!.contains('folder1')) {
-          debugPrint('Found text: "${text.data}"');
+        // Debug: print all text widgets
+        final Finder allTexts = find.byType(Text);
+        for (final Element element in allTexts.evaluate()) {
+          final Text text = element.widget as Text;
+          if (text.data != null && text.data!.contains('folder1')) {
+            debugPrint('Found text: "${text.data}"');
+          }
         }
-      }
 
-      // Find and drag folder1 (which contains files and a subfolder)
-      // Look for the folder text that is exactly the folder path
-      final Finder folder1Finder = find.text('file://root/folder1');
-      expect(folder1Finder, findsOneWidget);
+        // Find and drag folder1 (which contains files and a subfolder)
+        // Look for the folder text that is exactly the folder path
+        final Finder folder1Finder = find.text('file://root/folder1');
+        expect(folder1Finder, findsOneWidget);
 
-      // Find folder2
-      final Finder folder2Finder = find.text('file://root/folder2');
-      expect(folder2Finder, findsOneWidget);
+        // Find folder2
+        final Finder folder2Finder = find.text('file://root/folder2');
+        expect(folder2Finder, findsOneWidget);
 
-      // Start dragging folder1
-      final TestGesture gesture = await tester.startGesture(
-        tester.getCenter(folder1Finder.first),
-      );
-      await tester.pump(kLongPressTimeout);
+        // Start dragging folder1
+        final TestGesture gesture = await tester.startGesture(
+          tester.getCenter(folder1Finder.first),
+        );
+        await tester.pump(kLongPressTimeout);
 
-      // Move folder1 after folder2
-      final Offset folder2Position = tester.getCenter(folder2Finder);
-      await gesture.moveTo(Offset(folder2Position.dx, folder2Position.dy + 50));
-      await tester.pump();
+        // Move folder1 after folder2
+        final Offset folder2Position = tester.getCenter(folder2Finder);
+        await gesture.moveTo(
+          Offset(folder2Position.dx, folder2Position.dy + 50),
+        );
+        await tester.pump();
 
-      // Release
-      await gesture.up();
-      await tester.pumpAndSettle();
+        // Release
+        await gesture.up();
+        await tester.pumpAndSettle();
 
-      // Verify that the folder move was recorded
-      expect(reorderHistory.isNotEmpty, true);
-      
-      // Debug: print all reorder history
-      debugPrint('Reorder history:');
-      for (int i = 0; i < reorderHistory.length; i += 2) {
-        if (i + 1 < reorderHistory.length) {
-          debugPrint('  ${reorderHistory[i]} -> ${reorderHistory[i + 1]}');
+        // Verify that the folder move was recorded
+        expect(reorderHistory.isNotEmpty, true);
+
+        // Debug: print all reorder history
+        debugPrint('Reorder history:');
+        for (int i = 0; i < reorderHistory.length; i += 2) {
+          if (i + 1 < reorderHistory.length) {
+            debugPrint('  ${reorderHistory[i]} -> ${reorderHistory[i + 1]}');
+          }
         }
-      }
-      
-      // Should have the folder move
-      expect(reorderHistory.contains(Uri.parse('file://root/folder1')), true);
-      
-      // The widget should only notify about the folder itself
-      // Moving children is the responsibility of the parent widget
-      expect(reorderHistory.length, 2, 
-          reason: 'Should only have one reorder notification (folder only)');
-    });
+
+        // Should have the folder move
+        expect(reorderHistory.contains(Uri.parse('file://root/folder1')), true);
+
+        // The widget should only notify about the folder itself
+        // Moving children is the responsibility of the parent widget
+        expect(
+          reorderHistory.length,
+          2,
+          reason: 'Should only have one reorder notification (folder only)',
+        );
+      },
+    );
 
     /* Commented out - this functionality is tested in folder_drag_expansion_test.dart
     testWidgets('should preserve expansion state after dragging Downloads into Documents', (

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:reorderable_tree_list_view/src/typedefs.dart';
 
 /// Controller that manages callbacks and event handling for the tree view.
-/// 
+///
 /// This class coordinates between the tree view widget and the action system,
 /// providing a centralized place to manage all callbacks and ensure proper
 /// event timing and error handling.
@@ -120,34 +120,38 @@ class EventController extends ChangeNotifier {
   }
 
   /// Checks if a node can be expanded.
-  /// 
+  ///
   /// Returns true if no validation callback is set or if the callback returns true.
   bool canExpand(Uri path) => canExpandCallback?.call(path) ?? true;
 
   /// Checks if a node can be dragged.
-  /// 
+  ///
   /// Returns true if no validation callback is set or if the callback returns true.
   bool canDrag(Uri path) => canDragCallback?.call(path) ?? true;
 
   /// Checks if a drop operation is allowed.
-  /// 
+  ///
   /// Returns true if no validation callback is set or if the callback returns true.
-  bool canDrop(Uri draggedPath, Uri targetPath) => canDropCallback?.call(draggedPath, targetPath) ?? true;
+  bool canDrop(Uri draggedPath, Uri targetPath) =>
+      canDropCallback?.call(draggedPath, targetPath) ?? true;
 
   /// Asynchronously checks if a node can be expanded.
-  /// 
+  ///
   /// Returns true if no validation callback is set or if the callback returns true.
-  Future<bool> canExpandAsync(Uri path) async => await canExpandAsyncCallback?.call(path) ?? true;
+  Future<bool> canExpandAsync(Uri path) async =>
+      await canExpandAsyncCallback?.call(path) ?? true;
 
   /// Asynchronously checks if a node can be dragged.
-  /// 
+  ///
   /// Returns true if no validation callback is set or if the callback returns true.
-  Future<bool> canDragAsync(Uri path) async => await canDragAsyncCallback?.call(path) ?? true;
+  Future<bool> canDragAsync(Uri path) async =>
+      await canDragAsyncCallback?.call(path) ?? true;
 
   /// Asynchronously checks if a drop operation is allowed.
-  /// 
+  ///
   /// Returns true if no validation callback is set or if the callback returns true.
-  Future<bool> canDropAsync(Uri draggedPath, Uri targetPath) async => await canDropAsyncCallback?.call(draggedPath, targetPath) ?? true;
+  Future<bool> canDropAsync(Uri draggedPath, Uri targetPath) async =>
+      await canDropAsyncCallback?.call(draggedPath, targetPath) ?? true;
 
   /// Invokes a callback with error handling.
   void _invokeCallback(VoidCallback callback) {
@@ -159,19 +163,21 @@ class EventController extends ChangeNotifier {
       callback();
     } catch (error, stackTrace) {
       // Log the error but don't rethrow to prevent disrupting the tree view
-      FlutterError.reportError(FlutterErrorDetails(
-        exception: error,
-        stack: stackTrace,
-        library: 'reorderable_tree_list_view',
-        context: ErrorDescription('while invoking a tree view callback'),
-      ));
+      FlutterError.reportError(
+        FlutterErrorDetails(
+          exception: error,
+          stack: stackTrace,
+          library: 'reorderable_tree_list_view',
+          context: ErrorDescription('while invoking a tree view callback'),
+        ),
+      );
     }
   }
 
   @override
   void dispose() {
     _disposed = true;
-    
+
     // Clear all callbacks to prevent memory leaks
     onExpandStart = null;
     onExpandEnd = null;
@@ -190,7 +196,7 @@ class EventController extends ChangeNotifier {
     canExpandAsyncCallback = null;
     canDragAsyncCallback = null;
     canDropAsyncCallback = null;
-    
+
     super.dispose();
   }
 }

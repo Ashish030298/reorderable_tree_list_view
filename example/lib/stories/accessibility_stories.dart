@@ -38,7 +38,8 @@ class _KeyboardNavigationStory extends StatefulWidget {
   const _KeyboardNavigationStory();
 
   @override
-  State<_KeyboardNavigationStory> createState() => _KeyboardNavigationStoryState();
+  State<_KeyboardNavigationStory> createState() =>
+      _KeyboardNavigationStoryState();
 }
 
 class _KeyboardNavigationStoryState extends State<_KeyboardNavigationStory> {
@@ -53,7 +54,8 @@ class _KeyboardNavigationStoryState extends State<_KeyboardNavigationStory> {
 
   void _logAction(String action) {
     setState(() {
-      _actionLog.insert(0, '${DateTime.now().toLocal().toString().split(' ')[1].split('.')[0]} - $action');
+      _actionLog.insert(0,
+          '${DateTime.now().toLocal().toString().split(' ')[1].split('.')[0]} - $action');
       if (_actionLog.length > 10) {
         _actionLog.removeLast();
       }
@@ -107,22 +109,21 @@ class _KeyboardNavigationStoryState extends State<_KeyboardNavigationStory> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                
+
                 // Tree
                 Expanded(
                   child: Focus(
                     autofocus: true,
-                    child: enableKeyboardShortcuts
-                        ? _buildTree()
-                        : _buildTree(),
+                    child:
+                        enableKeyboardShortcuts ? _buildTree() : _buildTree(),
                   ),
                 ),
               ],
             ),
           ),
-          
+
           const SizedBox(width: 16),
-          
+
           // Action log
           Expanded(
             flex: 1,
@@ -132,8 +133,8 @@ class _KeyboardNavigationStoryState extends State<_KeyboardNavigationStory> {
                 Text(
                   'Action Log',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 const SizedBox(height: 8),
                 Expanded(
@@ -141,7 +142,8 @@ class _KeyboardNavigationStoryState extends State<_KeyboardNavigationStory> {
                     width: double.infinity,
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                      color:
+                          Theme.of(context).colorScheme.surfaceContainerHighest,
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: _actionLog.isEmpty
@@ -152,9 +154,12 @@ class _KeyboardNavigationStoryState extends State<_KeyboardNavigationStory> {
                               padding: const EdgeInsets.only(bottom: 4),
                               child: Text(
                                 _actionLog[index],
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  fontFamily: 'monospace',
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      fontFamily: 'monospace',
+                                    ),
                               ),
                             ),
                           ),
@@ -172,18 +177,23 @@ class _KeyboardNavigationStoryState extends State<_KeyboardNavigationStory> {
     return ReorderableTreeListView(
       paths: paths,
       selectionMode: SelectionMode.multiple,
-      itemBuilder: (context, path) => StoryItemBuilder.buildFileItem(context, path),
-      folderBuilder: (context, path) => StoryItemBuilder.buildFolderItem(context, path),
+      itemBuilder: (context, path) =>
+          StoryItemBuilder.buildFileItem(context, path),
+      folderBuilder: (context, path) =>
+          StoryItemBuilder.buildFolderItem(context, path),
       onReorder: (oldPath, newPath) {
         setState(() {
           paths.remove(oldPath);
           paths.add(newPath);
         });
-        _logAction('Reorder: ${TreePath.getDisplayName(oldPath)} → ${TreePath.getDisplayName(newPath)}');
+        _logAction(
+            'Reorder: ${TreePath.getDisplayName(oldPath)} → ${TreePath.getDisplayName(newPath)}');
       },
       onItemTap: (path) => _logAction('Tap: ${TreePath.getDisplayName(path)}'),
-      onItemActivated: (path) => _logAction('Activate: ${TreePath.getDisplayName(path)}'),
-      onSelectionChanged: (selection) => _logAction('Selection: ${selection.length} items'),
+      onItemActivated: (path) =>
+          _logAction('Activate: ${TreePath.getDisplayName(path)}'),
+      onSelectionChanged: (selection) =>
+          _logAction('Selection: ${selection.length} items'),
     );
   }
 }
@@ -213,7 +223,7 @@ class _ScreenReaderStoryState extends State<_ScreenReaderStory> {
       label: 'Verbose Labels',
       initial: true,
     );
-    
+
     final bool includeHints = context.knobs.boolean(
       label: 'Include Hints',
       initial: true,
@@ -245,25 +255,26 @@ class _ScreenReaderStoryState extends State<_ScreenReaderStory> {
                 const Text('• Descriptive hints and instructions'),
                 if (verboseLabels)
                   const Text('• Verbose mode: Detailed descriptions'),
-                if (includeHints)
-                  const Text('• Hints: Action guidance'),
+                if (includeHints) const Text('• Hints: Action guidance'),
               ],
             ),
           ),
           const SizedBox(height: 16),
-          
+
           // Tree view
           Expanded(
             child: ReorderableTreeListView(
               paths: paths,
-              itemBuilder: (context, path) => _buildAccessibleItem(context, path, verboseLabels, includeHints),
-              folderBuilder: (context, path) => _buildAccessibleFolder(context, path, verboseLabels, includeHints),
+              itemBuilder: (context, path) => _buildAccessibleItem(
+                  context, path, verboseLabels, includeHints),
+              folderBuilder: (context, path) => _buildAccessibleFolder(
+                  context, path, verboseLabels, includeHints),
               onReorder: (oldPath, newPath) {
                 setState(() {
                   paths.remove(oldPath);
                   paths.add(newPath);
                 });
-                
+
                 // Announce the reorder to screen readers
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -281,14 +292,14 @@ class _ScreenReaderStoryState extends State<_ScreenReaderStory> {
     );
   }
 
-  Widget _buildAccessibleItem(BuildContext context, Uri path, bool verboseLabels, bool includeHints) {
+  Widget _buildAccessibleItem(
+      BuildContext context, Uri path, bool verboseLabels, bool includeHints) {
     final String displayName = TreePath.getDisplayName(path);
     final String semanticLabel = verboseLabels
         ? 'File: $displayName, Path: ${path.toString()}'
         : 'File: $displayName';
-    final String hint = includeHints
-        ? 'Double tap to open, swipe for options'
-        : '';
+    final String hint =
+        includeHints ? 'Double tap to open, swipe for options' : '';
 
     return Semantics(
       label: semanticLabel,
@@ -298,14 +309,14 @@ class _ScreenReaderStoryState extends State<_ScreenReaderStory> {
     );
   }
 
-  Widget _buildAccessibleFolder(BuildContext context, Uri path, bool verboseLabels, bool includeHints) {
+  Widget _buildAccessibleFolder(
+      BuildContext context, Uri path, bool verboseLabels, bool includeHints) {
     final String displayName = TreePath.getDisplayName(path);
     final String semanticLabel = verboseLabels
         ? 'Folder: $displayName, Path: ${path.toString()}'
         : 'Folder: $displayName';
-    final String hint = includeHints
-        ? 'Double tap to expand, swipe for options'
-        : '';
+    final String hint =
+        includeHints ? 'Double tap to expand, swipe for options' : '';
 
     return Semantics(
       label: semanticLabel,
@@ -347,7 +358,7 @@ class _FocusManagementStoryState extends State<_FocusManagementStory> {
       label: 'Show Focus Indicator',
       initial: true,
     );
-    
+
     final bool autofocus = context.knobs.boolean(
       label: 'Autofocus Tree',
       initial: true,
@@ -386,7 +397,7 @@ class _FocusManagementStoryState extends State<_FocusManagementStory> {
             ),
           ),
           const SizedBox(height: 16),
-          
+
           // Tree view
           Expanded(
             child: Focus(
@@ -396,12 +407,17 @@ class _FocusManagementStoryState extends State<_FocusManagementStory> {
                 paths: paths,
                 theme: TreeTheme(
                   focusColor: showFocusIndicator
-                      ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.3)
+                      ? Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withValues(alpha: 0.3)
                       : Colors.transparent,
                   borderRadius: const BorderRadius.all(Radius.circular(8)),
                 ),
-                itemBuilder: (context, path) => _buildFocusableItem(context, path),
-                folderBuilder: (context, path) => _buildFocusableFolder(context, path),
+                itemBuilder: (context, path) =>
+                    _buildFocusableItem(context, path),
+                folderBuilder: (context, path) =>
+                    _buildFocusableFolder(context, path),
                 onItemTap: (path) {
                   setState(() {
                     _focusedPath = path;
@@ -423,7 +439,7 @@ class _FocusManagementStoryState extends State<_FocusManagementStory> {
 
   Widget _buildFocusableItem(BuildContext context, Uri path) {
     final bool isFocused = _focusedPath == path;
-    
+
     return Container(
       decoration: isFocused
           ? BoxDecoration(
@@ -440,7 +456,7 @@ class _FocusManagementStoryState extends State<_FocusManagementStory> {
 
   Widget _buildFocusableFolder(BuildContext context, Uri path) {
     final bool isFocused = _focusedPath == path;
-    
+
     return Container(
       decoration: isFocused
           ? BoxDecoration(
@@ -479,7 +495,7 @@ class _HighContrastStoryState extends State<_HighContrastStory> {
       label: 'High Contrast Mode',
       initial: false,
     );
-    
+
     final bool largeFonts = context.knobs.boolean(
       label: 'Large Fonts',
       initial: false,
@@ -488,7 +504,8 @@ class _HighContrastStoryState extends State<_HighContrastStory> {
     final TreeTheme theme = useHighContrast
         ? TreeTheme(
             indentSize: 40.0,
-            itemPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+            itemPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
             borderRadius: const BorderRadius.all(Radius.circular(4.0)),
             hoverColor: Colors.yellow.withValues(alpha: 0.3),
             focusColor: Colors.blue.withValues(alpha: 0.5),
@@ -512,8 +529,12 @@ class _HighContrastStoryState extends State<_HighContrastStory> {
             width: double.infinity,
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: useHighContrast ? Colors.yellow.shade100 : Theme.of(context).colorScheme.surfaceContainerHighest,
-              border: useHighContrast ? Border.all(color: Colors.black, width: 2) : null,
+              color: useHighContrast
+                  ? Colors.yellow.shade100
+                  : Theme.of(context).colorScheme.surfaceContainerHighest,
+              border: useHighContrast
+                  ? Border.all(color: Colors.black, width: 2)
+                  : null,
               borderRadius: BorderRadius.circular(4),
             ),
             child: Column(
@@ -528,7 +549,9 @@ class _HighContrastStoryState extends State<_HighContrastStory> {
                   ),
                 ),
                 Text(
-                  useHighContrast ? '• High contrast colors enabled' : '• Normal contrast',
+                  useHighContrast
+                      ? '• High contrast colors enabled'
+                      : '• Normal contrast',
                   style: TextStyle(
                     fontSize: largeFonts ? 16 : 14,
                     color: useHighContrast ? Colors.black : null,
@@ -545,7 +568,7 @@ class _HighContrastStoryState extends State<_HighContrastStory> {
             ),
           ),
           const SizedBox(height: 16),
-          
+
           // Tree view
           Expanded(
             child: Container(
@@ -558,8 +581,10 @@ class _HighContrastStoryState extends State<_HighContrastStory> {
               child: ReorderableTreeListView(
                 paths: paths,
                 theme: theme,
-                itemBuilder: (context, path) => _buildHighContrastItem(context, path, useHighContrast, largeFonts),
-                folderBuilder: (context, path) => _buildHighContrastFolder(context, path, useHighContrast, largeFonts),
+                itemBuilder: (context, path) => _buildHighContrastItem(
+                    context, path, useHighContrast, largeFonts),
+                folderBuilder: (context, path) => _buildHighContrastFolder(
+                    context, path, useHighContrast, largeFonts),
                 onReorder: (oldPath, newPath) {
                   setState(() {
                     paths.remove(oldPath);
@@ -574,9 +599,10 @@ class _HighContrastStoryState extends State<_HighContrastStory> {
     );
   }
 
-  Widget _buildHighContrastItem(BuildContext context, Uri path, bool highContrast, bool largeFonts) {
+  Widget _buildHighContrastItem(
+      BuildContext context, Uri path, bool highContrast, bool largeFonts) {
     final String displayName = TreePath.getDisplayName(path);
-    
+
     return Row(
       children: [
         Icon(
@@ -599,9 +625,10 @@ class _HighContrastStoryState extends State<_HighContrastStory> {
     );
   }
 
-  Widget _buildHighContrastFolder(BuildContext context, Uri path, bool highContrast, bool largeFonts) {
+  Widget _buildHighContrastFolder(
+      BuildContext context, Uri path, bool highContrast, bool largeFonts) {
     final String displayName = TreePath.getDisplayName(path);
-    
+
     return Row(
       children: [
         Icon(
@@ -665,7 +692,7 @@ class _VoiceControlStoryState extends State<_VoiceControlStory> {
     setState(() {
       _isListening = !_isListening;
     });
-    
+
     if (_isListening) {
       _simulateVoiceCommand('Started listening...');
     } else {
@@ -727,7 +754,7 @@ class _VoiceControlStoryState extends State<_VoiceControlStory> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                
+
                 // Sample voice commands
                 Wrap(
                   spacing: 8,
@@ -739,36 +766,40 @@ class _VoiceControlStoryState extends State<_VoiceControlStory> {
                     'Move up',
                     'Move down',
                     'Delete item',
-                  ].map((command) => ActionChip(
-                    label: Text(command),
-                    onPressed: _isListening
-                        ? () => _simulateVoiceCommand(command)
-                        : null,
-                  )).toList(),
+                  ]
+                      .map((command) => ActionChip(
+                            label: Text(command),
+                            onPressed: _isListening
+                                ? () => _simulateVoiceCommand(command)
+                                : null,
+                          ))
+                      .toList(),
                 ),
                 const SizedBox(height: 16),
-                
+
                 // Tree
                 Expanded(
                   child: ReorderableTreeListView(
                     paths: paths,
-                    itemBuilder: (context, path) => StoryItemBuilder.buildFileItem(context, path),
-                    folderBuilder: (context, path) => StoryItemBuilder.buildFolderItem(context, path),
+                    itemBuilder: (context, path) =>
+                        StoryItemBuilder.buildFileItem(context, path),
+                    folderBuilder: (context, path) =>
+                        StoryItemBuilder.buildFolderItem(context, path),
                     onReorder: (oldPath, newPath) {
                       setState(() {
                         paths.remove(oldPath);
                         paths.add(newPath);
                       });
-                      
+
                       if (enableVoiceFeedback) {
                         _simulateVoiceCommand(
-                          'Moved ${TreePath.getDisplayName(oldPath)} to ${TreePath.getDisplayName(newPath)}'
-                        );
+                            'Moved ${TreePath.getDisplayName(oldPath)} to ${TreePath.getDisplayName(newPath)}');
                       }
                     },
                     onItemTap: (path) {
                       if (enableVoiceFeedback) {
-                        _simulateVoiceCommand('Tapped ${TreePath.getDisplayName(path)}');
+                        _simulateVoiceCommand(
+                            'Tapped ${TreePath.getDisplayName(path)}');
                       }
                     },
                   ),
@@ -776,9 +807,9 @@ class _VoiceControlStoryState extends State<_VoiceControlStory> {
               ],
             ),
           ),
-          
+
           const SizedBox(width: 16),
-          
+
           // Voice command log
           Expanded(
             flex: 1,
@@ -788,8 +819,8 @@ class _VoiceControlStoryState extends State<_VoiceControlStory> {
                 Text(
                   'Voice Commands',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 const SizedBox(height: 8),
                 Expanded(
@@ -797,7 +828,8 @@ class _VoiceControlStoryState extends State<_VoiceControlStory> {
                     width: double.infinity,
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                      color:
+                          Theme.of(context).colorScheme.surfaceContainerHighest,
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: _voiceCommands.isEmpty
@@ -813,7 +845,8 @@ class _VoiceControlStoryState extends State<_VoiceControlStory> {
                                   Expanded(
                                     child: Text(
                                       _voiceCommands[index],
-                                      style: Theme.of(context).textTheme.bodySmall,
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
                                     ),
                                   ),
                                 ],

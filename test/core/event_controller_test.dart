@@ -45,10 +45,22 @@ void main() {
 
     test('handles null callbacks gracefully', () {
       // Should not throw when callbacks are null
-      expect(() => controller.notifyExpandStart(Uri.parse('file://test')), returnsNormally);
-      expect(() => controller.notifyExpandEnd(Uri.parse('file://test')), returnsNormally);
-      expect(() => controller.notifyCollapseStart(Uri.parse('file://test')), returnsNormally);
-      expect(() => controller.notifyCollapseEnd(Uri.parse('file://test')), returnsNormally);
+      expect(
+        () => controller.notifyExpandStart(Uri.parse('file://test')),
+        returnsNormally,
+      );
+      expect(
+        () => controller.notifyExpandEnd(Uri.parse('file://test')),
+        returnsNormally,
+      );
+      expect(
+        () => controller.notifyCollapseStart(Uri.parse('file://test')),
+        returnsNormally,
+      );
+      expect(
+        () => controller.notifyCollapseEnd(Uri.parse('file://test')),
+        returnsNormally,
+      );
     });
 
     test('can register and invoke drag callbacks', () {
@@ -59,7 +71,8 @@ void main() {
       controller
         ..onDragStart = dragStartPaths.add
         ..onDragEnd = dragEndPaths.add
-        ..onReorder = (Uri oldPath, Uri newPath) => reorders.add((oldPath, newPath));
+        ..onReorder = (Uri oldPath, Uri newPath) =>
+            reorders.add((oldPath, newPath));
 
       final Uri sourcePath = Uri.parse('file://source');
       final Uri targetPath = Uri.parse('file://target');
@@ -169,7 +182,8 @@ void main() {
     test('can register and invoke context menu callback', () {
       final List<(Uri, Offset)> contextMenuEvents = <(Uri, Offset)>[];
 
-      controller.onContextMenu = (Uri path, Offset position) => contextMenuEvents.add((path, position));
+      controller.onContextMenu = (Uri path, Offset position) =>
+          contextMenuEvents.add((path, position));
 
       final Uri path = Uri.parse('file://test');
       const Offset position = Offset(100, 200);
@@ -184,7 +198,10 @@ void main() {
       };
 
       // Should catch the error and not throw
-      expect(() => controller.notifyExpandStart(Uri.parse('file://test')), returnsNormally);
+      expect(
+        () => controller.notifyExpandStart(Uri.parse('file://test')),
+        returnsNormally,
+      );
     });
 
     test('dispose prevents further callbacks', () {
@@ -200,11 +217,11 @@ void main() {
 
       // Dispose should clear callbacks and prevent further invocations
       controller.dispose();
-      
+
       // Verify the callback reference was cleared by dispose
       expect(controller.onItemTap, isNull);
       expect(callbackInvoked, isFalse);
-      
+
       // Verify disposed flag
       expect(controller.isDisposed, isTrue);
     });

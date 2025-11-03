@@ -97,7 +97,7 @@ class _LargeDatasetStoryState extends State<_LargeDatasetStory> {
                 const Spacer(),
                 ElevatedButton.icon(
                   onPressed: _isLoading ? null : _generateLargeDataset,
-                  icon: _isLoading 
+                  icon: _isLoading
                       ? const SizedBox(
                           width: 16,
                           height: 16,
@@ -116,7 +116,7 @@ class _LargeDatasetStoryState extends State<_LargeDatasetStory> {
             ),
           ),
           const SizedBox(height: 16),
-          
+
           // Tree view
           Expanded(
             child: _isLoading
@@ -133,7 +133,8 @@ class _LargeDatasetStoryState extends State<_LargeDatasetStory> {
                 : ReorderableTreeListView(
                     paths: paths,
                     animateExpansion: animateExpansion,
-                    itemBuilder: (context, path) => StoryItemBuilder.buildSimpleItem(context, path),
+                    itemBuilder: (context, path) =>
+                        StoryItemBuilder.buildSimpleItem(context, path),
                     onReorder: (oldPath, newPath) {
                       setState(() {
                         paths.remove(oldPath);
@@ -244,7 +245,7 @@ class _DynamicDataStoryState extends State<_DynamicDataStory> {
             ),
           ),
           const SizedBox(height: 16),
-          
+
           // Tree view
           Expanded(
             child: paths.isEmpty
@@ -268,8 +269,10 @@ class _DynamicDataStoryState extends State<_DynamicDataStory> {
                   )
                 : ReorderableTreeListView(
                     paths: paths,
-                    itemBuilder: (context, path) => StoryItemBuilder.buildFileItem(context, path),
-                    folderBuilder: (context, path) => StoryItemBuilder.buildFolderItem(context, path),
+                    itemBuilder: (context, path) =>
+                        StoryItemBuilder.buildFileItem(context, path),
+                    folderBuilder: (context, path) =>
+                        StoryItemBuilder.buildFolderItem(context, path),
                     onReorder: (oldPath, newPath) {
                       setState(() {
                         paths.remove(oldPath);
@@ -307,18 +310,18 @@ class _UriSchemesStoryState extends State<_UriSchemesStory> {
       Uri.parse('file:///home/user/documents/file1.txt'),
       Uri.parse('file:///home/user/documents/file2.pdf'),
       Uri.parse('file:///home/user/pictures/photo.jpg'),
-      
+
       // HTTP URLs
       Uri.parse('https://example.com/'),
       Uri.parse('https://example.com/products/item1.html'),
       Uri.parse('https://example.com/products/item2.html'),
       Uri.parse('https://example.com/about.html'),
-      
+
       // FTP URLs
       Uri.parse('ftp://ftp.example.com/'),
       Uri.parse('ftp://ftp.example.com/uploads/data.zip'),
       Uri.parse('ftp://ftp.example.com/public/readme.txt'),
-      
+
       // Custom schemes
       Uri.parse('app://navigation/'),
       Uri.parse('app://navigation/home'),
@@ -376,13 +379,14 @@ class _UriSchemesStoryState extends State<_UriSchemesStory> {
             ),
           ),
           const SizedBox(height: 16),
-          
+
           // Tree view
           Expanded(
             child: ReorderableTreeListView(
               paths: filteredPaths,
               itemBuilder: (context, path) => _buildSchemeItem(context, path),
-              folderBuilder: (context, path) => _buildSchemeFolder(context, path),
+              folderBuilder: (context, path) =>
+                  _buildSchemeFolder(context, path),
               onReorder: (oldPath, newPath) {
                 setState(() {
                   final oldIndex = paths.indexOf(oldPath);
@@ -401,7 +405,7 @@ class _UriSchemesStoryState extends State<_UriSchemesStory> {
   Widget _buildSchemeItem(BuildContext context, Uri path) {
     final String displayName = TreePath.getDisplayName(path);
     final Color schemeColor = _getSchemeColor(path.scheme);
-    
+
     return Row(
       children: [
         Container(
@@ -434,8 +438,8 @@ class _UriSchemesStoryState extends State<_UriSchemesStory> {
               Text(
                 path.toString(),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey[600],
-                ),
+                      color: Colors.grey[600],
+                    ),
                 overflow: TextOverflow.ellipsis,
               ),
             ],
@@ -448,7 +452,7 @@ class _UriSchemesStoryState extends State<_UriSchemesStory> {
   Widget _buildSchemeFolder(BuildContext context, Uri path) {
     final String displayName = TreePath.getDisplayName(path);
     final Color schemeColor = _getSchemeColor(path.scheme);
-    
+
     return Row(
       children: [
         Container(
@@ -484,8 +488,8 @@ class _UriSchemesStoryState extends State<_UriSchemesStory> {
               Text(
                 path.toString(),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey[600],
-                ),
+                      color: Colors.grey[600],
+                    ),
                 overflow: TextOverflow.ellipsis,
               ),
             ],
@@ -603,7 +607,7 @@ class _EmptyStatesStoryState extends State<_EmptyStatesStory> {
             ),
           ),
           const SizedBox(height: 16),
-          
+
           // Tree view or state indicators
           Expanded(
             child: _buildContent(),
@@ -680,8 +684,10 @@ class _EmptyStatesStoryState extends State<_EmptyStatesStory> {
 
     return ReorderableTreeListView(
       paths: paths,
-      itemBuilder: (context, path) => StoryItemBuilder.buildFileItem(context, path),
-      folderBuilder: (context, path) => StoryItemBuilder.buildFolderItem(context, path),
+      itemBuilder: (context, path) =>
+          StoryItemBuilder.buildFileItem(context, path),
+      folderBuilder: (context, path) =>
+          StoryItemBuilder.buildFolderItem(context, path),
       onReorder: (oldPath, newPath) {
         setState(() {
           paths.remove(oldPath);
@@ -711,43 +717,51 @@ class _DeepHierarchyStoryState extends State<_DeepHierarchyStory> {
 
   List<Uri> _generateDeepHierarchy() {
     final List<Uri> result = [];
-    
+
     // Create a very deep hierarchy
     for (int level1 = 1; level1 <= 3; level1++) {
       result.add(Uri.parse('file:///level1_folder$level1/'));
-      
+
       for (int level2 = 1; level2 <= 3; level2++) {
-        result.add(Uri.parse('file:///level1_folder$level1/level2_folder$level2/'));
-        
+        result.add(
+            Uri.parse('file:///level1_folder$level1/level2_folder$level2/'));
+
         for (int level3 = 1; level3 <= 3; level3++) {
-          result.add(Uri.parse('file:///level1_folder$level1/level2_folder$level2/level3_folder$level3/'));
-          
+          result.add(Uri.parse(
+              'file:///level1_folder$level1/level2_folder$level2/level3_folder$level3/'));
+
           for (int level4 = 1; level4 <= 2; level4++) {
-            result.add(Uri.parse('file:///level1_folder$level1/level2_folder$level2/level3_folder$level3/level4_folder$level4/'));
-            
+            result.add(Uri.parse(
+                'file:///level1_folder$level1/level2_folder$level2/level3_folder$level3/level4_folder$level4/'));
+
             for (int level5 = 1; level5 <= 2; level5++) {
-              result.add(Uri.parse('file:///level1_folder$level1/level2_folder$level2/level3_folder$level3/level4_folder$level4/level5_folder$level5/'));
-              
+              result.add(Uri.parse(
+                  'file:///level1_folder$level1/level2_folder$level2/level3_folder$level3/level4_folder$level4/level5_folder$level5/'));
+
               // Add some files at the deepest level
-              result.add(Uri.parse('file:///level1_folder$level1/level2_folder$level2/level3_folder$level3/level4_folder$level4/level5_folder$level5/deep_file$level5.txt'));
+              result.add(Uri.parse(
+                  'file:///level1_folder$level1/level2_folder$level2/level3_folder$level3/level4_folder$level4/level5_folder$level5/deep_file$level5.txt'));
             }
-            
+
             // Add some files at level 4
-            result.add(Uri.parse('file:///level1_folder$level1/level2_folder$level2/level3_folder$level3/level4_folder$level4/file$level4.txt'));
+            result.add(Uri.parse(
+                'file:///level1_folder$level1/level2_folder$level2/level3_folder$level3/level4_folder$level4/file$level4.txt'));
           }
-          
+
           // Add some files at level 3
-          result.add(Uri.parse('file:///level1_folder$level1/level2_folder$level2/level3_folder$level3/file$level3.txt'));
+          result.add(Uri.parse(
+              'file:///level1_folder$level1/level2_folder$level2/level3_folder$level3/file$level3.txt'));
         }
-        
+
         // Add some files at level 2
-        result.add(Uri.parse('file:///level1_folder$level1/level2_folder$level2/file$level2.txt'));
+        result.add(Uri.parse(
+            'file:///level1_folder$level1/level2_folder$level2/file$level2.txt'));
       }
-      
+
       // Add some files at level 1
       result.add(Uri.parse('file:///level1_folder$level1/file$level1.txt'));
     }
-    
+
     return result;
   }
 
@@ -780,12 +794,13 @@ class _DeepHierarchyStoryState extends State<_DeepHierarchyStory> {
                 ),
                 Text('Total items: ${paths.length}'),
                 Text('Max depth: ${_getMaxDepth()} levels'),
-                const Text('Tip: Use "Expanded by Default: false" for better performance'),
+                const Text(
+                    'Tip: Use "Expanded by Default: false" for better performance'),
               ],
             ),
           ),
           const SizedBox(height: 16),
-          
+
           // Tree view
           Expanded(
             child: ReorderableTreeListView(
@@ -811,14 +826,16 @@ class _DeepHierarchyStoryState extends State<_DeepHierarchyStory> {
 
   int _getMaxDepth() {
     return paths
-        .map((uri) => uri.pathSegments.where((segment) => segment.isNotEmpty).length)
+        .map((uri) =>
+            uri.pathSegments.where((segment) => segment.isNotEmpty).length)
         .fold(0, (max, depth) => depth > max ? depth : max);
   }
 
   Widget _buildDepthItem(BuildContext context, Uri path) {
-    final int depth = path.pathSegments.where((segment) => segment.isNotEmpty).length;
+    final int depth =
+        path.pathSegments.where((segment) => segment.isNotEmpty).length;
     final String displayName = TreePath.getDisplayName(path);
-    
+
     return Row(
       children: [
         Container(
@@ -845,9 +862,10 @@ class _DeepHierarchyStoryState extends State<_DeepHierarchyStory> {
   }
 
   Widget _buildDepthFolder(BuildContext context, Uri path) {
-    final int depth = path.pathSegments.where((segment) => segment.isNotEmpty).length;
+    final int depth =
+        path.pathSegments.where((segment) => segment.isNotEmpty).length;
     final String displayName = TreePath.getDisplayName(path);
-    
+
     return Row(
       children: [
         Container(
@@ -888,7 +906,7 @@ class _DeepHierarchyStoryState extends State<_DeepHierarchyStory> {
       Colors.teal,
       Colors.brown,
     ];
-    
+
     return colors[depth % colors.length];
   }
 }

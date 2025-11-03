@@ -353,10 +353,11 @@ class KeyboardNavigationController extends ChangeNotifier {
   }
 
   /// Handles a click on an item with modifier key support.
-  /// 
+  ///
   /// This method should be called when an item is clicked to properly
   /// handle selection based on the current selection mode and modifier keys.
-  void handleItemClick(Uri path, {
+  void handleItemClick(
+    Uri path, {
     bool isShiftPressed = false,
     bool isControlPressed = false,
     List<TreeNode>? visibleNodes,

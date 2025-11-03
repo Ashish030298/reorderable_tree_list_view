@@ -297,12 +297,12 @@ void main() {
                     child: ReorderableTreeListView(
                       paths: paths,
                       initiallyExpanded: <Uri>{
-                Uri.parse('file://'),
-                Uri.parse('file://var'),
-                Uri.parse('file://var/data'),
-                Uri.parse('file://usr'),
-                Uri.parse('file://usr/bin'),
-              },
+                        Uri.parse('file://'),
+                        Uri.parse('file://var'),
+                        Uri.parse('file://var/data'),
+                        Uri.parse('file://usr'),
+                        Uri.parse('file://usr/bin'),
+                      },
                       itemBuilder: (BuildContext context, Uri path) =>
                           ListTile(title: Text(TreePath.getDisplayName(path))),
                     ),

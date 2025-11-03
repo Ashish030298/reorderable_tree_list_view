@@ -88,7 +88,8 @@ class DragDropHandler {
       if (targetParent.host.isEmpty && targetParent.pathSegments.isEmpty) {
         // Moving to root - create URI like file://nodename
         return Uri(scheme: 'file', host: nodeName);
-      } else if (targetParent.host.isNotEmpty && targetParent.pathSegments.isEmpty) {
+      } else if (targetParent.host.isNotEmpty &&
+          targetParent.pathSegments.isEmpty) {
         // Moving to a folder represented as host (like file://folder1/)
         return Uri(scheme: 'file', host: targetParent.host, path: '/$nodeName');
       } else {
@@ -210,7 +211,7 @@ class DragDropHandler {
 
     // When dragging, we want to determine where the item will end up
     // The key insight: if we're dropping right after a folder, we should drop INTO that folder
-    
+
     // The node we're checking is the one that will be just before our dropped item
     int checkIndex;
     if (oldIndex < newIndex) {
@@ -222,7 +223,7 @@ class DragDropHandler {
       // So we check the item at newIndex-1 (unless it's 0)
       checkIndex = newIndex > 0 ? newIndex - 1 : 0;
     }
-    
+
     // Handle edge cases
     if (checkIndex < 0) {
       checkIndex = 0;
@@ -230,9 +231,9 @@ class DragDropHandler {
     if (checkIndex >= visibleNodes.length) {
       checkIndex = visibleNodes.length - 1;
     }
-    
+
     final TreeNode previousNode = visibleNodes[checkIndex];
-    
+
     // If the previous node is a folder, drop into it
     if (!previousNode.isLeaf) {
       return DropTargetInfo(
@@ -244,7 +245,8 @@ class DragDropHandler {
       // Otherwise, drop into the same parent as the previous node
       return DropTargetInfo(
         targetNode: previousNode,
-        targetParentPath: TreePath.getParentPath(previousNode.path) ?? Uri.parse('file://'),
+        targetParentPath:
+            TreePath.getParentPath(previousNode.path) ?? Uri.parse('file://'),
         dropIntoFolder: false,
       );
     }

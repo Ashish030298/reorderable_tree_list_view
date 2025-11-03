@@ -45,15 +45,17 @@ void main() {
       testWidgets('should focus first item on initial tab', (
         WidgetTester tester,
       ) async {
-        await tester.pumpWidget(buildTestWidget(
-          paths: testPaths,
-          initiallyExpanded: <Uri>{
-            Uri.parse('file://'),
-            Uri.parse('file://folder1'),
-            Uri.parse('file://folder2'),
-            Uri.parse('file://folder3'),
-          },
-        ));
+        await tester.pumpWidget(
+          buildTestWidget(
+            paths: testPaths,
+            initiallyExpanded: <Uri>{
+              Uri.parse('file://'),
+              Uri.parse('file://folder1'),
+              Uri.parse('file://folder2'),
+              Uri.parse('file://folder3'),
+            },
+          ),
+        );
         await tester.pumpAndSettle();
 
         // Tab to focus the tree
@@ -73,15 +75,17 @@ void main() {
       testWidgets('should maintain focus during tree updates', (
         WidgetTester tester,
       ) async {
-        await tester.pumpWidget(buildTestWidget(
-          paths: testPaths,
-          initiallyExpanded: <Uri>{
-            Uri.parse('file://'),
-            Uri.parse('file://folder1'),
-            Uri.parse('file://folder2'),
-            Uri.parse('file://folder3'),
-          },
-        ));
+        await tester.pumpWidget(
+          buildTestWidget(
+            paths: testPaths,
+            initiallyExpanded: <Uri>{
+              Uri.parse('file://'),
+              Uri.parse('file://folder1'),
+              Uri.parse('file://folder2'),
+              Uri.parse('file://folder3'),
+            },
+          ),
+        );
         await tester.pumpAndSettle();
 
         // Focus on second item (folder1)
@@ -130,15 +134,17 @@ void main() {
       testWidgets('should navigate down with arrow down', (
         WidgetTester tester,
       ) async {
-        await tester.pumpWidget(buildTestWidget(
-          paths: testPaths,
-          initiallyExpanded: <Uri>{
-            Uri.parse('file://'),
-            Uri.parse('file://folder1'),
-            Uri.parse('file://folder2'),
-            Uri.parse('file://folder3'),
-          },
-        ));
+        await tester.pumpWidget(
+          buildTestWidget(
+            paths: testPaths,
+            initiallyExpanded: <Uri>{
+              Uri.parse('file://'),
+              Uri.parse('file://folder1'),
+              Uri.parse('file://folder2'),
+              Uri.parse('file://folder3'),
+            },
+          ),
+        );
         await tester.pumpAndSettle();
 
         await tester.sendKeyEvent(LogicalKeyboardKey.tab);
@@ -161,15 +167,17 @@ void main() {
       testWidgets('should navigate up with arrow up', (
         WidgetTester tester,
       ) async {
-        await tester.pumpWidget(buildTestWidget(
-          paths: testPaths,
-          initiallyExpanded: <Uri>{
-            Uri.parse('file://'),
-            Uri.parse('file://folder1'),
-            Uri.parse('file://folder2'),
-            Uri.parse('file://folder3'),
-          },
-        ));
+        await tester.pumpWidget(
+          buildTestWidget(
+            paths: testPaths,
+            initiallyExpanded: <Uri>{
+              Uri.parse('file://'),
+              Uri.parse('file://folder1'),
+              Uri.parse('file://folder2'),
+              Uri.parse('file://folder3'),
+            },
+          ),
+        );
         await tester.pumpAndSettle();
 
         await tester.sendKeyEvent(LogicalKeyboardKey.tab);
@@ -236,15 +244,17 @@ void main() {
       testWidgets('should collapse folder with arrow left', (
         WidgetTester tester,
       ) async {
-        await tester.pumpWidget(buildTestWidget(
-          paths: testPaths,
-          initiallyExpanded: <Uri>{
-            Uri.parse('file://'),
-            Uri.parse('file://folder1'),
-            Uri.parse('file://folder2'),
-            Uri.parse('file://folder3'),
-          },
-        ));
+        await tester.pumpWidget(
+          buildTestWidget(
+            paths: testPaths,
+            initiallyExpanded: <Uri>{
+              Uri.parse('file://'),
+              Uri.parse('file://folder1'),
+              Uri.parse('file://folder2'),
+              Uri.parse('file://folder3'),
+            },
+          ),
+        );
         await tester.pumpAndSettle();
 
         await tester.sendKeyEvent(LogicalKeyboardKey.tab);
@@ -270,15 +280,17 @@ void main() {
       testWidgets('should move to parent with arrow left on leaf', (
         WidgetTester tester,
       ) async {
-        await tester.pumpWidget(buildTestWidget(
-          paths: testPaths,
-          initiallyExpanded: <Uri>{
-            Uri.parse('file://'),
-            Uri.parse('file://folder1'),
-            Uri.parse('file://folder2'),
-            Uri.parse('file://folder3'),
-          },
-        ));
+        await tester.pumpWidget(
+          buildTestWidget(
+            paths: testPaths,
+            initiallyExpanded: <Uri>{
+              Uri.parse('file://'),
+              Uri.parse('file://folder1'),
+              Uri.parse('file://folder2'),
+              Uri.parse('file://folder3'),
+            },
+          ),
+        );
         await tester.pumpAndSettle();
 
         // Navigate to file1.txt inside folder1
@@ -325,15 +337,17 @@ void main() {
       testWidgets('should jump to first item with Home', (
         WidgetTester tester,
       ) async {
-        await tester.pumpWidget(buildTestWidget(
-          paths: testPaths,
-          initiallyExpanded: <Uri>{
-            Uri.parse('file://'),
-            Uri.parse('file://folder1'),
-            Uri.parse('file://folder2'),
-            Uri.parse('file://folder3'),
-          },
-        ));
+        await tester.pumpWidget(
+          buildTestWidget(
+            paths: testPaths,
+            initiallyExpanded: <Uri>{
+              Uri.parse('file://'),
+              Uri.parse('file://folder1'),
+              Uri.parse('file://folder2'),
+              Uri.parse('file://folder3'),
+            },
+          ),
+        );
         await tester.pumpAndSettle();
 
         // Navigate to middle item
@@ -361,15 +375,17 @@ void main() {
       testWidgets('should jump to last item with End', (
         WidgetTester tester,
       ) async {
-        await tester.pumpWidget(buildTestWidget(
-          paths: testPaths,
-          initiallyExpanded: <Uri>{
-            Uri.parse('file://'),
-            Uri.parse('file://folder1'),
-            Uri.parse('file://folder2'),
-            Uri.parse('file://folder3'),
-          },
-        ));
+        await tester.pumpWidget(
+          buildTestWidget(
+            paths: testPaths,
+            initiallyExpanded: <Uri>{
+              Uri.parse('file://'),
+              Uri.parse('file://folder1'),
+              Uri.parse('file://folder2'),
+              Uri.parse('file://folder3'),
+            },
+          ),
+        );
         await tester.pumpAndSettle();
 
         await tester.sendKeyEvent(LogicalKeyboardKey.tab);
@@ -505,15 +521,17 @@ void main() {
       testWidgets('should announce tree structure with Semantics', (
         WidgetTester tester,
       ) async {
-        await tester.pumpWidget(buildTestWidget(
-          paths: testPaths,
-          initiallyExpanded: <Uri>{
-            Uri.parse('file://'),
-            Uri.parse('file://folder1'),
-            Uri.parse('file://folder2'),
-            Uri.parse('file://folder3'),
-          },
-        ));
+        await tester.pumpWidget(
+          buildTestWidget(
+            paths: testPaths,
+            initiallyExpanded: <Uri>{
+              Uri.parse('file://'),
+              Uri.parse('file://folder1'),
+              Uri.parse('file://folder2'),
+              Uri.parse('file://folder3'),
+            },
+          ),
+        );
         await tester.pumpAndSettle();
 
         // Check that the tree structure is present

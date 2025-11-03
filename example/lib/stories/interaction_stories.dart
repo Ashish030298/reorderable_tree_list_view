@@ -60,7 +60,7 @@ class _DragDropStoryState extends State<_DragDropStory> {
       label: 'Enable Drag & Drop',
       initial: true,
     );
-    
+
     final bool showDragFeedback = context.knobs.boolean(
       label: 'Show Drag Feedback',
       initial: true,
@@ -92,28 +92,30 @@ class _DragDropStoryState extends State<_DragDropStory> {
                     const SizedBox(height: 8),
                     const Text('Recent reorders:'),
                     ..._reorderHistory.take(3).map((entry) => Text(
-                      '• $entry',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    )),
+                          '• $entry',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        )),
                   ],
                 ],
               ),
             ),
             const SizedBox(height: 16),
           ],
-          
+
           // Tree view
           Expanded(
             child: ReorderableTreeListView(
               paths: paths,
               enableDragAndDrop: enableDragDrop,
-              itemBuilder: (context, path) => StoryItemBuilder.buildFileItem(context, path),
-              folderBuilder: (context, path) => StoryItemBuilder.buildFolderItem(context, path),
+              itemBuilder: (context, path) =>
+                  StoryItemBuilder.buildFileItem(context, path),
+              folderBuilder: (context, path) =>
+                  StoryItemBuilder.buildFolderItem(context, path),
               onReorder: (oldPath, newPath) {
                 setState(() {
                   paths.remove(oldPath);
                   paths.add(newPath);
-                  
+
                   final String oldName = TreePath.getDisplayName(oldPath);
                   final String newName = TreePath.getDisplayName(newPath);
                   _reorderHistory.insert(0, '$oldName → $newName');
@@ -135,20 +137,23 @@ class _DragDropStoryState extends State<_DragDropStory> {
                   }
                 });
               },
-              proxyDecorator: showDragFeedback ? (child, index, animation) {
-                return AnimatedBuilder(
-                  animation: animation,
-                  builder: (context, child) {
-                    return Material(
-                      elevation: 8 * animation.value,
-                      borderRadius: BorderRadius.circular(8),
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                      child: child,
-                    );
-                  },
-                  child: child,
-                );
-              } : null,
+              proxyDecorator: showDragFeedback
+                  ? (child, index, animation) {
+                      return AnimatedBuilder(
+                        animation: animation,
+                        builder: (context, child) {
+                          return Material(
+                            elevation: 8 * animation.value,
+                            borderRadius: BorderRadius.circular(8),
+                            color:
+                                Theme.of(context).colorScheme.primaryContainer,
+                            child: child,
+                          );
+                        },
+                        child: child,
+                      );
+                    }
+                  : null,
             ),
           ),
         ],
@@ -223,15 +228,17 @@ class _SelectionStoryState extends State<_SelectionStory> {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 4),
-                  const Text('• Click: Select single item (replace previous selection)'),
+                  const Text(
+                      '• Click: Select single item (replace previous selection)'),
                   const Text('• Ctrl+Click: Add/remove item from selection'),
-                  const Text('• Shift+Click: Select range from last selected item'),
+                  const Text(
+                      '• Shift+Click: Select range from last selected item'),
                   const Text('• Space: Toggle selection of focused item'),
                 ],
               ),
             ),
           if (mode == SelectionMode.multiple) const SizedBox(height: 16),
-          
+
           // Selection info
           if (selectedPaths.isNotEmpty)
             Container(
@@ -249,21 +256,22 @@ class _SelectionStoryState extends State<_SelectionStory> {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   ...selectedPaths.map((path) => Text(
-                    '• ${TreePath.getDisplayName(path)}',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  )),
+                        '• ${TreePath.getDisplayName(path)}',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      )),
                 ],
               ),
             ),
           if (selectedPaths.isNotEmpty) const SizedBox(height: 16),
-          
+
           // Tree view
           Expanded(
             child: ReorderableTreeListView(
               paths: paths,
               selectionMode: mode,
               initialSelection: selectedPaths,
-              itemBuilder: (context, path) => Text(TreePath.getDisplayName(path)),
+              itemBuilder: (context, path) =>
+                  Text(TreePath.getDisplayName(path)),
               onSelectionChanged: (newSelection) {
                 setState(() {
                   selectedPaths = newSelection;
@@ -271,7 +279,8 @@ class _SelectionStoryState extends State<_SelectionStory> {
                 StoryHelpers.mockSelectionCallback(newSelection);
               },
               onItemTap: StoryHelpers.createLoggingCallback('Item Tap'),
-              onItemActivated: StoryHelpers.createLoggingCallback('Item Activated'),
+              onItemActivated:
+                  StoryHelpers.createLoggingCallback('Item Activated'),
               onReorder: (oldPath, newPath) {
                 setState(() {
                   paths.remove(oldPath);
@@ -328,7 +337,9 @@ class _ContextMenuStoryState extends State<_ContextMenuStory> {
                 ),
                 const Text('• Right-click on any item to show context menu'),
                 const Text('• Context menu actions will be logged'),
-                if (kIsWeb) const Text('• Browser context menu is prevented automatically'),
+                if (kIsWeb)
+                  const Text(
+                      '• Browser context menu is prevented automatically'),
                 if (_lastContextMenuAction != null) ...[
                   const SizedBox(height: 8),
                   Text(
@@ -343,12 +354,13 @@ class _ContextMenuStoryState extends State<_ContextMenuStory> {
             ),
           ),
           const SizedBox(height: 16),
-          
+
           // Tree view
           Expanded(
             child: ReorderableTreeListView(
               paths: paths,
-              itemBuilder: (context, path) => Text(TreePath.getDisplayName(path)),
+              itemBuilder: (context, path) =>
+                  Text(TreePath.getDisplayName(path)),
               onContextMenu: (path, position) {
                 _showContextMenu(context, path, position);
               },
@@ -361,10 +373,11 @@ class _ContextMenuStoryState extends State<_ContextMenuStory> {
 
   void _showContextMenu(BuildContext context, Uri path, Offset position) {
     final String displayName = TreePath.getDisplayName(path);
-    
+
     showMenu(
       context: context,
-      position: RelativeRect.fromLTRB(position.dx, position.dy, position.dx, position.dy),
+      position: RelativeRect.fromLTRB(
+          position.dx, position.dy, position.dx, position.dy),
       items: <PopupMenuEntry<String>>[
         const PopupMenuItem<String>(
           value: 'copy',
@@ -413,7 +426,7 @@ class _ContextMenuStoryState extends State<_ContextMenuStory> {
       if (kIsWeb) {
         BrowserContextMenu.enableContextMenu();
       }
-      
+
       if (value != null) {
         setState(() {
           _lastContextMenuAction = '$value on $displayName';
@@ -478,43 +491,57 @@ class _ValidationStoryState extends State<_ValidationStory> {
             ),
           ),
           const SizedBox(height: 16),
-          
+
           // Tree view
           Expanded(
             child: ReorderableTreeListView(
               paths: paths,
-              itemBuilder: (context, path) => StoryItemBuilder.buildFileItem(context, path),
-              folderBuilder: (context, path) => StoryItemBuilder.buildFolderItem(context, path),
-              canExpand: enableValidation ? (path) {
-                final String folderName = TreePath.getDisplayName(path);
-                final bool canExpand = !_lockedFolders.contains(folderName);
-                if (!canExpand) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Cannot expand $folderName folder')),
-                  );
-                }
-                return canExpand;
-              } : null,
-              canDrag: enableValidation ? (path) {
-                final String fileName = TreePath.getDisplayName(path);
-                final bool canDrag = !fileName.endsWith('.pdf');
-                if (!canDrag) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Cannot drag PDF files')),
-                  );
-                }
-                return canDrag;
-              } : null,
-              canDrop: enableValidation ? (draggedPath, targetPath) {
-                final String targetName = TreePath.getDisplayName(targetPath);
-                final bool canDrop = targetName != 'Music';
-                if (!canDrop) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Cannot drop into Music folder')),
-                  );
-                }
-                return canDrop;
-              } : null,
+              itemBuilder: (context, path) =>
+                  StoryItemBuilder.buildFileItem(context, path),
+              folderBuilder: (context, path) =>
+                  StoryItemBuilder.buildFolderItem(context, path),
+              canExpand: enableValidation
+                  ? (path) {
+                      final String folderName = TreePath.getDisplayName(path);
+                      final bool canExpand =
+                          !_lockedFolders.contains(folderName);
+                      if (!canExpand) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content:
+                                  Text('Cannot expand $folderName folder')),
+                        );
+                      }
+                      return canExpand;
+                    }
+                  : null,
+              canDrag: enableValidation
+                  ? (path) {
+                      final String fileName = TreePath.getDisplayName(path);
+                      final bool canDrag = !fileName.endsWith('.pdf');
+                      if (!canDrag) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text('Cannot drag PDF files')),
+                        );
+                      }
+                      return canDrag;
+                    }
+                  : null,
+              canDrop: enableValidation
+                  ? (draggedPath, targetPath) {
+                      final String targetName =
+                          TreePath.getDisplayName(targetPath);
+                      final bool canDrop = targetName != 'Music';
+                      if (!canDrop) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text('Cannot drop into Music folder')),
+                        );
+                      }
+                      return canDrop;
+                    }
+                  : null,
               onReorder: (oldPath, newPath) {
                 setState(() {
                   paths.remove(oldPath);
@@ -549,7 +576,8 @@ class _EventHandlingStoryState extends State<_EventHandlingStory> {
 
   void _logEvent(String event) {
     setState(() {
-      _eventLog.insert(0, '${DateTime.now().toLocal().toString().split(' ')[1].split('.')[0]} - $event');
+      _eventLog.insert(0,
+          '${DateTime.now().toLocal().toString().split(' ')[1].split('.')[0]} - $event');
       if (_eventLog.length > 20) {
         _eventLog.removeLast();
       }
@@ -568,28 +596,39 @@ class _EventHandlingStoryState extends State<_EventHandlingStory> {
             flex: 2,
             child: ReorderableTreeListView(
               paths: paths,
-              itemBuilder: (context, path) => Text(TreePath.getDisplayName(path)),
+              itemBuilder: (context, path) =>
+                  Text(TreePath.getDisplayName(path)),
               onReorder: (oldPath, newPath) {
                 setState(() {
                   paths.remove(oldPath);
                   paths.add(newPath);
                 });
-                _logEvent('Reorder: ${TreePath.getDisplayName(oldPath)} → ${TreePath.getDisplayName(newPath)}');
+                _logEvent(
+                    'Reorder: ${TreePath.getDisplayName(oldPath)} → ${TreePath.getDisplayName(newPath)}');
               },
-              onExpandStart: (path) => _logEvent('Expand Start: ${TreePath.getDisplayName(path)}'),
-              onExpandEnd: (path) => _logEvent('Expand End: ${TreePath.getDisplayName(path)}'),
-              onCollapseStart: (path) => _logEvent('Collapse Start: ${TreePath.getDisplayName(path)}'),
-              onCollapseEnd: (path) => _logEvent('Collapse End: ${TreePath.getDisplayName(path)}'),
-              onDragStart: (path) => _logEvent('Drag Start: ${TreePath.getDisplayName(path)}'),
-              onDragEnd: (path) => _logEvent('Drag End: ${TreePath.getDisplayName(path)}'),
-              onItemTap: (path) => _logEvent('Item Tap: ${TreePath.getDisplayName(path)}'),
-              onItemActivated: (path) => _logEvent('Item Activated: ${TreePath.getDisplayName(path)}'),
-              onSelectionChanged: (selection) => _logEvent('Selection: ${selection.length} items'),
+              onExpandStart: (path) =>
+                  _logEvent('Expand Start: ${TreePath.getDisplayName(path)}'),
+              onExpandEnd: (path) =>
+                  _logEvent('Expand End: ${TreePath.getDisplayName(path)}'),
+              onCollapseStart: (path) =>
+                  _logEvent('Collapse Start: ${TreePath.getDisplayName(path)}'),
+              onCollapseEnd: (path) =>
+                  _logEvent('Collapse End: ${TreePath.getDisplayName(path)}'),
+              onDragStart: (path) =>
+                  _logEvent('Drag Start: ${TreePath.getDisplayName(path)}'),
+              onDragEnd: (path) =>
+                  _logEvent('Drag End: ${TreePath.getDisplayName(path)}'),
+              onItemTap: (path) =>
+                  _logEvent('Item Tap: ${TreePath.getDisplayName(path)}'),
+              onItemActivated: (path) =>
+                  _logEvent('Item Activated: ${TreePath.getDisplayName(path)}'),
+              onSelectionChanged: (selection) =>
+                  _logEvent('Selection: ${selection.length} items'),
             ),
           ),
-          
+
           const SizedBox(width: 16),
-          
+
           // Event log
           Expanded(
             flex: 1,
@@ -602,8 +641,8 @@ class _EventHandlingStoryState extends State<_EventHandlingStory> {
                     Text(
                       'Event Log',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
                     IconButton(
                       onPressed: () => setState(() => _eventLog.clear()),
@@ -618,7 +657,8 @@ class _EventHandlingStoryState extends State<_EventHandlingStory> {
                     width: double.infinity,
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                      color:
+                          Theme.of(context).colorScheme.surfaceContainerHighest,
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: _eventLog.isEmpty
@@ -629,9 +669,12 @@ class _EventHandlingStoryState extends State<_EventHandlingStory> {
                               padding: const EdgeInsets.only(bottom: 4),
                               child: Text(
                                 _eventLog[index],
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  fontFamily: 'monospace',
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      fontFamily: 'monospace',
+                                    ),
                               ),
                             ),
                           ),

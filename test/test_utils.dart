@@ -94,7 +94,10 @@ class TestUtils {
     WidgetTester tester,
     Finder from,
     Finder to, {
-    Offset offset = const Offset(0, 20), // Drop slightly below target to drop into folders
+    Offset offset = const Offset(
+      0,
+      20,
+    ), // Drop slightly below target to drop into folders
   }) async {
     final Offset fromCenter = tester.getCenter(from);
     final Offset toCenter = tester.getCenter(to);
